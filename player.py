@@ -56,14 +56,7 @@ class Player:
 
     def __play_next_station__(self, next_station: dict) -> None:
         if next_station['id']:
-            if 'youtube' in next_station['url'] or 'youtu.be' in next_station['url']:
-                url = "qKAz9zlk6Xw"
-                video = pafy.new(url)
-                best = video.getbestaudio()
-                media = best.url
-            else:
-                media = self.vlc_instance.media_new(next_station['url'])
-
+            media = self.vlc_instance.media_new(next_station['url'])
             self.media_player.set_media(media)
             self.media_player.play()
             logging.info(f' Setting station: id: {next_station["id"]}, name: {next_station["name"]}')
@@ -82,22 +75,3 @@ class Player:
     def get_curr_station(self):
         curr_station = self.__urls__.get_curr()
         logging.info(f' Current station: id: {curr_station["id"]}, name: {curr_station["name"]}, {curr_station["url"]}')
-
-
-import time
-player = Player()
-player.set_next_station()
-time.sleep(2)
-player.set_next_station()
-time.sleep(2)
-player.set_next_station()
-time.sleep(2)
-player.set_next_station()
-time.sleep(2)
-player.set_prev_station()
-time.sleep(2)
-player.set_prev_station()
-time.sleep(2)
-player.get_curr_station()
-time.sleep(2)
-
