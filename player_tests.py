@@ -90,7 +90,6 @@ class PlayerTests(unittest.TestCase):
             pass
 
         player = Player()
-        num_of_stations = len(player.radio_control.__parsed_stations_list__)
         player.radio_control.add_station('Antyradio', 'https://an06.cdn.eurozet.pl/ant-web.mp3?t=1683367429522?redirected=06')
 
         player.set_next_station()
@@ -99,7 +98,7 @@ class PlayerTests(unittest.TestCase):
         player.set_next_station()
         self.assertEqual(player.get_curr_station()['id'], 0)
 
-    def test_008_initial_station_when_open_file_failed(self):
+    def test_009_initial_station_when_open_file_failed(self):
         with open(radio_settings.URLS_PATH, 'w'):
             pass
 
@@ -108,6 +107,24 @@ class PlayerTests(unittest.TestCase):
 
         player.set_next_station()
         self.assertEqual(player.get_curr_station()['id'], 0)
+
+    def test_010_remove_station(self):
+        player = Player()
+
+        if len(player.radio_control.__parsed_stations_list__) == 1:
+            player.radio_control.add_station('Antyradio', 'https://an06.cdn.eurozet.pl/ant-web.mp3?t=1683367429522?redirected=06')
+
+        no_of_stations_before_remove = len(player.radio_control.__parsed_stations_list__)
+
+        with open(radio_settings.URLS_PATH, 'r+') as read_file:
+            read_file_list = list(read_file)
+            last_id = int(read_file_list[-1].split(';')[0])
+
+        player.remove_station(last_id)
+
+        no_of_stations_after_remove = len(player.radio_control.__parsed_stations_list__)
+
+        self.assertGreater(no_of_stations_before_remove, no_of_stations_after_remove)
 
 
 if __name__ == '__main__':

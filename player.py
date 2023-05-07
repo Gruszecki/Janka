@@ -2,7 +2,7 @@ import logging
 import radio_settings
 import vlc
 
-logging.basicConfig(level = 0)
+logging.basicConfig(level = logging.CRITICAL)
 
 
 class RadioStationIterator:
@@ -63,6 +63,19 @@ class RadioStationIterator:
 
         self.__parsed_stations_list__ = self.__get_urls_from_file__()
 
+    def remove_station(self, id: int) -> None:
+        with open(radio_settings.URLS_PATH, 'r') as read_file:
+            read_file_list = list(read_file)
+
+            new_stations_list = [station for station in read_file_list if str(id) != station.split(';')[0]]
+
+        with open(radio_settings.URLS_PATH, 'w') as write_file:
+            for station in new_stations_list:
+                write_file.write(station)
+
+
+        self.__parsed_stations_list__ = self.__get_urls_from_file__()
+
 
 class Player:
     def __init__(self):
@@ -90,3 +103,9 @@ class Player:
 
     def get_curr_station(self):
         return self.radio_control.get_curr()
+
+    def add_new_station(self, name: str, url: str):
+        self.radio_control.add_station(name, url)
+
+    def remove_station(self, id: int):
+        self.radio_control.remove_station(id)
