@@ -1,1 +1,0 @@
-URLS_PATH = r'urls.csv'

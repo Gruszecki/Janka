@@ -1,8 +1,9 @@
 import logging
-import radio_settings
 import vlc
 
-logging.basicConfig(level = logging.CRITICAL)
+from settings import URLS_PATH
+
+logging.basicConfig(level = logging.INFO)
 
 
 class RadioStationIterator:
@@ -12,7 +13,7 @@ class RadioStationIterator:
 
     def __get_urls_from_file__(self):
         try:
-            with open(radio_settings.URLS_PATH) as urls:
+            with open(URLS_PATH) as urls:
                 raw_list = [list(map(str.strip, line.split(';'))) for line in urls]
 
             if raw_list:
@@ -53,7 +54,7 @@ class RadioStationIterator:
         return self.curr
 
     def add_station(self, name: str, url: str) -> None:
-        with open(radio_settings.URLS_PATH, 'r+') as read_file, open(radio_settings.URLS_PATH, 'a') as write_file:
+        with open(URLS_PATH, 'r+') as read_file, open(URLS_PATH, 'a') as write_file:
             read_file_list = list(read_file)
             if len(read_file_list):
                 last_id = int(read_file_list[-1].split(';')[0])
@@ -64,15 +65,14 @@ class RadioStationIterator:
         self.__parsed_stations_list__ = self.__get_urls_from_file__()
 
     def remove_station(self, id: int) -> None:
-        with open(radio_settings.URLS_PATH, 'r') as read_file:
+        with open(URLS_PATH, 'r') as read_file:
             read_file_list = list(read_file)
 
             new_stations_list = [station for station in read_file_list if str(id) != station.split(';')[0]]
 
-        with open(radio_settings.URLS_PATH, 'w') as write_file:
+        with open(URLS_PATH, 'w') as write_file:
             for station in new_stations_list:
                 write_file.write(station)
-
 
         self.__parsed_stations_list__ = self.__get_urls_from_file__()
 
@@ -109,3 +109,7 @@ class Player:
 
     def remove_station(self, id: int):
         self.radio_control.remove_station(id)
+
+    #TODO: Get station by id
+    #TODO: Add function that turns on specific station
+    #TODO: Add function that turns off radio

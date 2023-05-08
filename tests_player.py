@@ -1,18 +1,18 @@
 import unittest
 
-import radio_settings
 from player import Player
+from settings import URLS_PATH
 
 
 class PlayerTests(unittest.TestCase):
     urls_content = str()
 
     def setUp(self) -> None:
-        with open(radio_settings.URLS_PATH, 'r') as f:
+        with open(URLS_PATH, 'r') as f:
             self.urls_content = f.read()
 
     def tearDown(self) -> None:
-        with open(radio_settings.URLS_PATH, 'w') as f:
+        with open(URLS_PATH, 'w') as f:
             f.write(self.urls_content)
 
     def test_001_import_radio_stations(self):
@@ -20,7 +20,7 @@ class PlayerTests(unittest.TestCase):
         self.assertGreater(len(player.radio_control.__parsed_stations_list__), 1)
 
     def test_002_initial_station_only_when_no_stations_in_file(self):
-        with open(radio_settings.URLS_PATH, 'w'):
+        with open(URLS_PATH, 'w'):
             pass
 
         player = Player()
@@ -86,7 +86,7 @@ class PlayerTests(unittest.TestCase):
         self.assertEqual(player.get_curr_station()['id'], 0)
 
     def test_008_add_new_station_to_empty_file(self):
-        with open(radio_settings.URLS_PATH, 'w'):
+        with open(URLS_PATH, 'w'):
             pass
 
         player = Player()
@@ -99,7 +99,7 @@ class PlayerTests(unittest.TestCase):
         self.assertEqual(player.get_curr_station()['id'], 0)
 
     def test_009_initial_station_when_open_file_failed(self):
-        with open(radio_settings.URLS_PATH, 'w'):
+        with open(URLS_PATH, 'w'):
             pass
 
         player = Player()
@@ -116,7 +116,7 @@ class PlayerTests(unittest.TestCase):
 
         no_of_stations_before_remove = len(player.radio_control.__parsed_stations_list__)
 
-        with open(radio_settings.URLS_PATH, 'r+') as read_file:
+        with open(URLS_PATH, 'r+') as read_file:
             read_file_list = list(read_file)
             last_id = int(read_file_list[-1].split(';')[0])
 
