@@ -13,11 +13,10 @@ class RadioStationIterator:
 
     def __get_urls_from_file__(self):
         try:
-            with open(URLS_PATH) as urls:
+            with open(URLS_PATH, encoding='utf-8') as urls:
                 raw_list = [list(map(str.strip, line.split(';'))) for line in urls]
-
             if raw_list:
-                radio_stations_list = [{'id': r_id, 'name': r_name, 'url': r_url} for r_id, r_name, r_url in raw_list]
+                radio_stations_list = [{'id': r_id, 'name': r_name, 'url': r_url} for r_id, r_name, r_url in raw_list if len(raw_list)]
                 radio_stations_list.insert(0, {'id': 0, 'name': '', 'url': ''})
             else:
                 radio_stations_list = [{'id': 0, 'name': '', 'url': ''}]
@@ -52,6 +51,26 @@ class RadioStationIterator:
             self.curr = self.__parsed_stations_list__[len(self.__parsed_stations_list__) - 1]
 
         return self.curr
+
+    def get_specific_by_id(self, id: int) -> dict:
+        try:
+            self.curr = self.__parsed_stations_list__[id]
+        except:
+            logging.critical(f'There is no id {id} in imported radio stations list!')
+
+        return self.curr
+
+    def get_specific_by_name(self, name: str) -> dict:
+        found_station = [station for station in self.__parsed_stations_list__ if station['name'].lower() == name.lower()]
+
+        if len(found_station) == 1:
+            self.curr = found_station[0]
+            return self.curr
+        elif len(found_station) == 0:
+            #TODO: Janka: f'Nie znaleziono stacji {name}.'
+            pass
+        else:
+            logging.critical(f'Name {name} is ambiguous')
 
     def add_station(self, name: str, url: str) -> None:
         with open(URLS_PATH, 'r+') as read_file, open(URLS_PATH, 'a') as write_file:
@@ -104,12 +123,20 @@ class Player:
     def get_curr_station(self):
         return self.radio_control.get_curr()
 
+    def set_station_by_id(self, id: int):
+        next_station = self.radio_control.get_specific_by_id(id)
+        self.__play_next_station__(next_station)
+
+    def set_station_by_name(self, name: str):
+        next_station = self.radio_control.get_specific_by_name(name)
+        self.__play_next_station__(next_station)
+
+    def turn_off_radio(self):
+        next_station = self.radio_control.get_specific_by_id(0)
+        self.__play_next_station__(next_station)
+
     def add_new_station(self, name: str, url: str):
         self.radio_control.add_station(name, url)
 
     def remove_station(self, id: int):
         self.radio_control.remove_station(id)
-
-    #TODO: Get station by id
-    #TODO: Add function that turns on specific station
-    #TODO: Add function that turns off radio

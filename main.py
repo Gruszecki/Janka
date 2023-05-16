@@ -8,3 +8,4 @@ alarm = Alarm()
 
 alarm_thread = threading.Thread(target=alarm.alarm(player))
 alarm_thread.start()
+

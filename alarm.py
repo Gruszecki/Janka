@@ -45,7 +45,7 @@ class Alarm:
             time_now_h = str(datetime.datetime.now().hour)
             time_now_m = str(datetime.datetime.now().minute)
 
-
+            print(f'{today}, {time_now_h}:{time_now_m}')
             for alarm in alarms:
                 if today in alarm['days']:
                     if time_now_h == alarm['start_h'] and time_now_m == alarm['start_m']:
@@ -56,10 +56,11 @@ class Alarm:
                         if len(alarm['station_id']):
                             logging.info(f'Turning ON station id {alarm["station_id"]}, which is ...')
                             #TODO: Add right fucntion and change logging.info
+                            player.set_next_station()
                     elif time_now_h == alarm['stop_h'] and time_now_m == alarm['stop_m']:
                         logging.info(f'Today is {datetime.date.today()}, time: {time_now_h}:{time_now_m}')
                         logging.info(f'Turning OFF the radio')
                         # TODO: Add right fucntion and change logging.info
 
-            time.sleep(60)
+            time.sleep(10)
 

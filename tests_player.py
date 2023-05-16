@@ -126,6 +126,41 @@ class PlayerTests(unittest.TestCase):
 
         self.assertGreater(no_of_stations_before_remove, no_of_stations_after_remove)
 
+    def test_011_set_station_by_id(self):
+        player = Player()
+
+        player.add_new_station('Testradio','https://an06.cdn.eurozet.pl/ant-web.mp3?t=1683367429522?redirected=06')
+        num_of_stations = len(player.radio_control.__parsed_stations_list__)
+        added_id = player.radio_control.__parsed_stations_list__[num_of_stations - 1]
+
+        player.set_station_by_id(int(added_id['id']))
+        current_station = player.get_curr_station()
+
+        self.assertEqual(int(added_id['id']), int(current_station['id']))
+
+    def test_012_set_station_by_name(self):
+        player = Player()
+
+        player.add_new_station('Testradio','https://an06.cdn.eurozet.pl/ant-web.mp3?t=1683367429522?redirected=06')
+        player.set_station_by_name('Testradio')
+
+        current_station = player.get_curr_station()
+
+        self.assertEqual(current_station['name'].lower(), 'testradio')
+
+    def test_013_turn_off_radio(self):
+        player = Player()
+
+        player.add_new_station('Testradio', 'https://an06.cdn.eurozet.pl/ant-web.mp3?t=1683367429522?redirected=06')
+
+        player.set_station_by_name('Testradio')
+        player.turn_off_radio()
+
+        current_station = player.get_curr_station()
+
+        self.assertEqual(current_station['id'], 0)
+
+
 
 if __name__ == '__main__':
     unittest.main()
