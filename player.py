@@ -25,7 +25,7 @@ class RadioStationIterator:
             return radio_stations_list
 
         except:
-            logging.error('Failed to open file with urls or failed to parse raw urls to radio stations.')
+            logging.error(' Player: Failed to open file with urls or failed to parse raw urls to radio stations.')
             return [self.curr]
 
 
@@ -56,7 +56,7 @@ class RadioStationIterator:
         try:
             self.curr = self.__parsed_stations_list__[id]
         except:
-            logging.critical(f'There is no id {id} in imported radio stations list!')
+            logging.critical(f' Player: There is no id {id} in imported radio stations list!')
 
         return self.curr
 
@@ -70,7 +70,7 @@ class RadioStationIterator:
             #TODO: Janka: f'Nie znaleziono stacji {name}.'
             pass
         else:
-            logging.critical(f'Name {name} is ambiguous')
+            logging.critical(f' Player: Name {name} is ambiguous')
 
     def add_station(self, name: str, url: str) -> None:
         with open(URLS_PATH, 'r+') as read_file, open(URLS_PATH, 'a') as write_file:
@@ -107,10 +107,10 @@ class Player:
             media = self.vlc_instance.media_new(next_station['url'])
             self.media_player.set_media(media)
             self.media_player.play()
-            logging.info(f' Setting station: id: {next_station["id"]}, name: {next_station["name"]}')
+            logging.info(f' Player: Setting station: id: {next_station["id"]}, name: {next_station["name"]}')
         else:
             self.media_player.stop()
-            logging.info(' Setting station. Initial station reached. Turning off the radio...')
+            logging.info(' Player: Setting station. Initial station reached. Turning off the radio...')
 
     def set_next_station(self):
         next_station = self.radio_control.get_next()
