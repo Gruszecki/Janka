@@ -122,5 +122,5 @@ def say_time():
 
 def say_wakeup_news():
     pass
-    # TODO: Prepare string for wakeup news including day, weekday, time and weather:
+    # TODO: Prepare string for wake up news including day, weekday, time and weather:
     # Dzień dobry. Jest 18 maja. Czwartek. Godzina 6:50. Pogoda na dziś: opis pogody
