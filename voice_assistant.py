@@ -4,6 +4,10 @@ import numpy as np
 import pyttsx3
 import speech_recognition as sr
 
+from typing import Union
+
+
+WAKE = 'janko'
 
 commands_list = {
     'say_time()': [
@@ -12,17 +16,20 @@ commands_list = {
         'która jest',
         'jaki jest czas'
     ],
+    'say_weather()': [
+        'jaka jest pogoda',
+        'podaj pogodę',
+    ]
 }
-WAKE = 'janko'
 
 
-def speak(text: str):
+def speak(text: str) -> None:
     engine = pyttsx3.init()
     engine.setProperty('rate', 175)
     engine.say(text)
     engine.runAndWait()
 
-def get_audio():
+def get_audio() -> str:
     recognizer = sr.Recognizer()
     with sr.Microphone() as source:
         audio = recognizer.listen(source)
@@ -38,12 +45,7 @@ def get_audio():
 
     return said.lower()
 
-
-def greetings():
-    speak(f'Nazywam się Janka. Jestem asystentem głosowym. Jeśli będziesz mnie potrzebował, zawołaj mnie: {WAKE}')
-
-
-def validate_text(text):
+def validate_text(text: str) -> Union[str, int]:
     match text:
         case 'NOT UNDERSTOOD':
             speak('Nie zrozumiałam.')
@@ -54,7 +56,8 @@ def validate_text(text):
         case _:
             return text
 
-def listen():
+def listen() -> int:
+    # TODO: Simplify this function
     text = get_audio()
 
     if text.count(WAKE) > 0:
@@ -62,31 +65,27 @@ def listen():
         text = validate_text(get_audio())
 
         if text:
-            if 'wyłącz się' in text:
-                speak('Żegnam ozięble.')
-                return 0
-            else:
-                command_to_type = ''
-                if commands_list['type(text)'][0] in text:
-                    index_to_type = text.index(commands_list['type(text)'][0])
-                    command_to_type = text[index_to_type:]
-                    text = text[:index_to_type]
+            command_to_type = ''
+            if commands_list['type(text)'][0] in text:
+                index_to_type = text.index(commands_list['type(text)'][0])
+                command_to_type = text[index_to_type:]
+                text = text[:index_to_type]
 
-                commands_split = text.split(' i ')
-                commands = [command for command in commands_split if len(command)]
+            commands_split = text.split(' i ')
+            commands = [command for command in commands_split if len(command)]
 
-                if len(command_to_type):
-                    commands.append(command_to_type)
+            if len(command_to_type):
+                commands.append(command_to_type)
 
-                for command in commands:
-                    result = execute_command(command)
+            for command in commands:
+                result = execute_command(command)
 
-                    if not result:
-                        speak(f'Nie znalazłam akcji dla: {command}')
+                if not result:
+                    speak(f'Nie znalazłam akcji dla: {command}')
 
     return 1
 
-def execute_command(text):
+def execute_command(text: str) -> int:
     for key, value in commands_list.items():
         for v in value:
             if v in text:
@@ -95,32 +94,20 @@ def execute_command(text):
 
     return 0
 
-
-def say_time():
+def say_time() -> None:
     time_now = str(datetime.datetime.now().time()).split(':')
-    hour = int(time_now[0])
+    hour = time_now[0]
     minutes = time_now[1]
-    text = ''
 
-    match hour:
-        case 0:
-            text += 'zero '
-        case 4 | 5 | 6 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20:
-            text += f'{hour}-ta '
-        case 1 | 21:
-            text += f'{hour}-sza '
-        case 2 | 22:
-            text += f'{hour}-ga '
-        case 3 | 23:
-            text += f'{hour}-cia '
-        case 7 | 8:
-            text += f'{hour}-ma '
-
-    text += minutes
+    text = f'Jest godzina {hour}:{minutes}'
 
     speak(text)
 
-def say_wakeup_news():
+def say_weather() -> None:
+    # TODO: String with weather for voice assistant
+    pass
+
+def say_wakeup_news() -> None:
     pass
     # TODO: Prepare string for wake up news including day, weekday, time and weather:
     # Dzień dobry. Jest 18 maja. Czwartek. Godzina 6:50. Pogoda na dziś: opis pogody
