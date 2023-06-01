@@ -1,0 +1,7 @@
+# Project
+.idea/
+__pycache__/
+venv/
+
+# App
+secrets.ini
