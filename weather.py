@@ -68,14 +68,14 @@ def get_current_weather_full_deccription() -> str:
     weather_data = get_weather_raw_data('current')
 
     if weather_data:
-        weather_desc = f'Pogoda dla miejscowości {CITY}. Stan na godzinę {local_time.tm_hour}:{str(local_time.tm_min).zfill(2)}. ' \
+        weather_desc = f'Pogoda dla miejscowości {CITY}. Stan na godzinę {local_time.tm_hour}:{str(local_time.tm_min).zfill(2)} . ' \
                        f'{weather_data["weather"][0]["description"]}. ' \
-                       f'Temperatura wynosi {weather_data["main"]["temp"]} stopni Celsjusza. ' \
-                       f'Temperatura odczuwalna: {weather_data["main"]["feels_like"]} stopni Celsjusza. ' \
+                       f'Temperatura wynosi {weather_data["main"]["temp"]: .1f}°C . ' \
+                       f'Temperatura odczuwalna: {weather_data["main"]["feels_like"]: .1f}°C . ' \
                        f'Zachmurzenie {weather_data["clouds"]["all"]}%. ' \
-                       f'Prędkość wiatru {weather_data["wind"]["speed"]} m/s. ' \
+                       f'Prędkość wiatru {weather_data["wind"]["speed"]: .1f} m/s. ' \
                        f'Wilgotność powietrza {weather_data["main"]["humidity"]}%. ' \
-                       f'Wschód słońca: {time.localtime(weather_data["sys"]["sunrise"]).tm_hour}:{str(time.localtime(weather_data["sys"]["sunrise"]).tm_min).zfill(2)}. ' \
+                       f'Wschód słońca: {time.localtime(weather_data["sys"]["sunrise"]).tm_hour}:{str(time.localtime(weather_data["sys"]["sunrise"]).tm_min).zfill(2)} . ' \
                        f'Zachód słońca: {time.localtime(weather_data["sys"]["sunset"]).tm_hour}:{str(time.localtime(weather_data["sys"]["sunset"]).tm_min).zfill(2)}.'
 
         return weather_desc
