@@ -3,8 +3,9 @@ import easyocr
 import numpy as np
 import pyttsx3
 import speech_recognition as sr
-
 from typing import Union
+
+import weather
 
 
 WAKE = 'janko'
@@ -16,7 +17,7 @@ commands_list = {
         'która jest',
         'jaki jest czas'
     ],
-    'say_weather()': [
+    'say_current_weather()': [
         'jaka jest pogoda',
         'podaj pogodę',
     ]
@@ -25,7 +26,7 @@ commands_list = {
 
 def speak(text: str) -> None:
     engine = pyttsx3.init()
-    engine.setProperty('rate', 175)
+    engine.setProperty('rate', 170)
     engine.say(text)
     engine.runAndWait()
 
@@ -66,11 +67,6 @@ def listen() -> int:
 
         if text:
             command_to_type = ''
-            if commands_list['type(text)'][0] in text:
-                index_to_type = text.index(commands_list['type(text)'][0])
-                command_to_type = text[index_to_type:]
-                text = text[:index_to_type]
-
             commands_split = text.split(' i ')
             commands = [command for command in commands_split if len(command)]
 
@@ -103,11 +99,10 @@ def say_time() -> None:
 
     speak(text)
 
-def say_weather() -> None:
-    # TODO: String with weather for voice assistant
-    pass
+def say_current_weather() -> None:
+    speak(weather.get_current_weather_full_deccription())
 
-def say_wakeup_news() -> None:
-    pass
-    # TODO: Prepare string for wake up news including day, weekday, time and weather:
-    # Dzień dobry. Jest 18 maja. Czwartek. Godzina 6:50. Pogoda na dziś: opis pogody
+def say_daily_forecast() -> None:
+    speak(weather.get_daily_forecast())
+
+say_daily_forecast()
