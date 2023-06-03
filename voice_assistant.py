@@ -110,5 +110,3 @@ def say_current_weather() -> None:
 
 def say_daily_forecast() -> None:
     speak(weather.get_daily_forecast())
-
-listen()
