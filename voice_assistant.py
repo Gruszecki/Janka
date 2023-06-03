@@ -15,11 +15,17 @@ commands_list = {
         'która godzina',
         'jaki mamy czas',
         'która jest',
-        'jaki jest czas'
+        'jaki jest czas',
     ],
     'say_current_weather()': [
         'jaka jest pogoda',
         'podaj pogodę',
+        'pogoda',
+    ],
+    'say_daily_forecast()': [
+        'jaka będzie pogoda',
+        'prognoza pogody',
+        'podaj prognozę pogody',
     ]
 }
 
@@ -105,4 +111,4 @@ def say_current_weather() -> None:
 def say_daily_forecast() -> None:
     speak(weather.get_daily_forecast())
 
-say_current_weather()
+listen()

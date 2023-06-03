@@ -131,13 +131,13 @@ def get_daily_forecast():
     if any([morn, day, eve, night]):
         full_string = ''
         if morn:
-            full_string += f'Rano: {morn["temp"]} stopni Celsjusza. {morn["desc"]}. '
+            full_string += f'Rano: {morn["temp"]: .1f}°C . {morn["desc"]}. '
         if day:
-            full_string += f'W południe: {day["temp"]} stopni Celsjusza. {day["desc"]}. '
+            full_string += f'W południe: {day["temp"]: .1f}°C . {day["desc"]}. '
         if eve:
-            full_string += f'Wieczorem: {eve["temp"]} stopni Celsjusza. {eve["desc"]}. '
+            full_string += f'Wieczorem: {eve["temp"]: .1f}°C . {eve["desc"]}. '
         if night:
-            full_string += f'W nocy: {night["temp"]} stopni Celsjusza. {night["desc"]}. '
+            full_string += f'W nocy: {night["temp"]: .1f}°C . {night["desc"]}. '
 
         return full_string
     else:
