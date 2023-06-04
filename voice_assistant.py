@@ -110,3 +110,7 @@ def say_current_weather() -> None:
 
 def say_daily_forecast() -> None:
     speak(weather.get_daily_forecast())
+
+def say_today_day() -> None:
+    # TODO: say_today_day() fonction, e.g. Dzisiaj jest 4 czerwca, niedziela
+    pass

@@ -1,8 +1,7 @@
 import logging
 import vlc
 
-import voice_assistant as voice
-
+import voice_assistant
 from settings import URLS_PATH
 
 logging.basicConfig(level = logging.INFO)
@@ -69,7 +68,7 @@ class RadioStationIterator:
             self.curr = found_station[0]
             return self.curr
         elif len(found_station) == 0:
-            voice.speak(f'Nie znaleziono stacji {name}')
+            voice_assistant.speak(f'Nie znaleziono stacji {name}')
         else:
             logging.critical(f' Player: Name {name} is ambiguous')
 

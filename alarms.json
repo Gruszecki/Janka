@@ -1,0 +1,30 @@
+{
+    "budzik": {
+        "id": 1,
+        "start_h": 7,
+        "start_m": 0,
+        "stop_h": 7,
+        "stop_m": 30,
+        "days": "12345",
+        "station_id": 1,
+        "wake_up": "True"
+    },
+    "LS": {
+          "id": 2,
+          "start_h": 18,
+          "start_m": 0,
+          "days": "1234567",
+          "msg": "Nowy odcienek LS-a"
+    },
+    "3": {
+        "id": 3,
+        "start_h": 18,
+        "start_m": 7,
+        "stop_h": 20,
+        "stop_m": 58,
+        "days": "1234567",
+        "station_id": 3,
+        "msg": "",
+        "wake_up": "False"
+    }
+}
