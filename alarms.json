@@ -1,30 +1,42 @@
 {
-    "budzik": {
-        "id": 1,
+    "Budzik": {
         "start_h": 7,
         "start_m": 0,
         "stop_h": 7,
         "stop_m": 30,
         "days": "12345",
         "station_id": 1,
-        "wake_up": "True"
+        "msg": "",
+        "wake_up": 1
     },
     "LS": {
-          "id": 2,
           "start_h": 18,
           "start_m": 0,
-          "days": "1234567",
-          "msg": "Nowy odcienek LS-a"
+          "stop_h": -1,
+          "stop_m": -1,
+          "days": "12345",
+          "station_id": -1,
+          "msg": "Nowy odcienek LS-a",
+          "wake_up": 0
     },
     "3": {
-        "id": 3,
-        "start_h": 18,
-        "start_m": 7,
-        "stop_h": 20,
-        "stop_m": 58,
+        "start_h": 9,
+        "start_m": 35,
+        "stop_h": 9,
+        "stop_m": 36,
         "days": "1234567",
         "station_id": 3,
         "msg": "",
-        "wake_up": "False"
+        "wake_up": 0
+    },
+    "spanko": {
+        "start_h": -1,
+        "start_m": -1,
+        "stop_h": 22,
+        "stop_m": 0,
+        "days": "1234567",
+        "station_id": -1,
+        "msg": "",
+        "wake_up": 0
     }
 }
