@@ -13,7 +13,7 @@ logging.basicConfig(level = logging.INFO)
 
 @dataclass
 class AlarmInfo:
-    name: Optional[int] = None
+    name: Optional[str] = None
     start_h: Optional[int] = None
     start_m: Optional[int] = None
     stop_h: Optional[int] = None
@@ -35,23 +35,59 @@ class Alarm:
             alarms_dict = json.load(f)
 
         for alarm_name in alarms_dict:
-            new_alarm = AlarmInfo()
-            new_alarm.name = alarm_name
-            new_alarm.start_h = alarms_dict[alarm_name]['start_h'] if alarms_dict[alarm_name]['start_h'] != -1 else None
-            new_alarm.start_m = alarms_dict[alarm_name]['start_m'] if alarms_dict[alarm_name]['start_m'] != -1 else None
-            new_alarm.stop_h = alarms_dict[alarm_name]['stop_h'] if alarms_dict[alarm_name]['stop_h'] != -1 else None
-            new_alarm.stop_m = alarms_dict[alarm_name]['stop_m'] if alarms_dict[alarm_name]['stop_m'] != -1 else None
-            new_alarm.days = alarms_dict[alarm_name]['days']
-            new_alarm.station_id = alarms_dict[alarm_name]['station_id'] if alarms_dict[alarm_name]['station_id'] != -1 else None
-            new_alarm.wake_up = True if alarms_dict[alarm_name]['wake_up'] else False
-
+            new_alarm = self.__dict_to_janka__(alarm_name, alarms_dict[alarm_name])
             alarms_list.append(new_alarm)
 
         return alarms_list
 
-    def add_new_alarm(self0) -> None:
-        # TODO: Add new alarm to json
-        pass
+    def add_new_alarm(self,
+                      name: Optional[str] = '',
+                      start_h: Optional[int] = None,
+                      start_m: Optional[int] = None,
+                      stop_h: Optional[int] = None,
+                      stop_m: Optional[int] = None,
+                      days: Optional[str] = '1234567',
+                      station_id: Optional[int] = None,
+                      msg: Optional[str] = None,
+                      wake_up: Optional[bool] = False) -> None:
+
+        new_alarm = AlarmInfo(name, start_h, start_m, stop_h, stop_m, days, station_id, msg, wake_up)
+        self.alarms.append(new_alarm)
+
+        with open(ALARMS_PATH, 'w+') as f:
+            alarms_dict_to_dump = dict()
+            for alarm in self.alarms:
+                alarms_dict_to_dump[alarm.name] = self.__janka_to_dict__(alarm)
+
+            alarms_json = json.dumps(alarms_dict_to_dump, indent=4, ensure_ascii=False)
+            f.write(alarms_json)
+
+    def __dict_to_janka__(self, alarm_name: Optional[str], alarm_dict: dict) -> AlarmInfo:
+        new_alarm = AlarmInfo()
+        new_alarm.name = alarm_name if len(alarm_name) else ''
+        new_alarm.start_h = alarm_dict['start_h']
+        new_alarm.start_m = alarm_dict['start_m']
+        new_alarm.stop_h = alarm_dict['stop_h']
+        new_alarm.stop_m = alarm_dict['stop_m']
+        new_alarm.days = alarm_dict['days']
+        new_alarm.station_id = alarm_dict['station_id']
+        new_alarm.msg = alarm_dict['msg']
+        new_alarm.wake_up = True if alarm_dict['wake_up'] else False
+
+        return new_alarm
+
+    def __janka_to_dict__(self, alarm_janka: AlarmInfo) -> dict:
+        new_alarm = dict()
+        new_alarm['start_h'] = alarm_janka.start_h
+        new_alarm['start_m'] = alarm_janka.start_m
+        new_alarm['stop_h'] = alarm_janka.stop_h
+        new_alarm['stop_m'] = alarm_janka.stop_m
+        new_alarm['days'] = alarm_janka.days
+        new_alarm['station_id'] = alarm_janka.station_id
+        new_alarm['msg'] = alarm_janka.msg
+        new_alarm['wake_up'] = 1 if alarm_janka.wake_up else 0
+
+        return new_alarm
 
     def start(self, player) -> None:
         while True:
@@ -83,5 +119,3 @@ class Alarm:
                         player.turn_off_radio()
 
             time.sleep(10)
-
-alarms = Alarm()
