@@ -1,5 +1,6 @@
-{
-    "Budzik": {
+[
+    {
+        "name": "Budzik",
         "start_h": 7,
         "start_m": 0,
         "stop_h": 7,
@@ -7,9 +8,10 @@
         "days": "12345",
         "station_id": 1,
         "msg": null,
-        "wake_up": 1
+        "wake_up": true
     },
-    "LS": {
+    {
+        "name": "LS",
         "start_h": 18,
         "start_m": 0,
         "stop_h": null,
@@ -17,9 +19,10 @@
         "days": "12345",
         "station_id": null,
         "msg": "Nowy odcienek LS-a",
-        "wake_up": 0
+        "wake_up": false
     },
-    "3": {
+    {
+        "name": "3",
         "start_h": 11,
         "start_m": 35,
         "stop_h": 11,
@@ -27,9 +30,10 @@
         "days": "1234567",
         "station_id": 3,
         "msg": "Dajecie czadu dalej.",
-        "wake_up": 0
+        "wake_up": false
     },
-    "spanko": {
+    {
+        "name": "spanko",
         "start_h": null,
         "start_m": null,
         "stop_h": 22,
@@ -37,9 +41,10 @@
         "days": "1234567",
         "station_id": null,
         "msg": null,
-        "wake_up": 0
+        "wake_up": false
     },
-    "èdüb≥o": {
+    {
+        "name": "èdüb≥o",
         "start_h": 5,
         "start_m": 25,
         "stop_h": 5,
@@ -47,6 +52,6 @@
         "days": "1234567",
         "station_id": null,
         "msg": null,
-        "wake_up": 0
+        "wake_up": false
     }
-}
+]

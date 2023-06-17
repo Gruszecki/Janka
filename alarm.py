@@ -27,16 +27,13 @@ class AlarmInfo:
 class Alarm:
     def __init__(self):
         self.alarms = self._get_alarms_from_json()
+        pp(self.alarms)
 
     def _get_alarms_from_json(self) -> Union[list, None]:
-        alarms_list = list()
-
         with open(ALARMS_PATH) as f:
             alarms_dict = json.load(f)
 
-        for alarm_name in alarms_dict:
-            new_alarm = self.__dict_to_janka__(alarm_name, alarms_dict[alarm_name])
-            alarms_list.append(new_alarm)
+        alarms_list = [AlarmInfo(**alarm) for alarm in alarms_dict]
 
         return alarms_list
 
@@ -62,20 +59,6 @@ class Alarm:
             alarms_json = json.dumps(alarms_dict_to_dump, indent=4, ensure_ascii=False)
             f.write(alarms_json)
 
-    def __dict_to_janka__(self, alarm_name: Optional[str], alarm_dict: dict) -> AlarmInfo:
-        new_alarm = AlarmInfo()
-        new_alarm.name = alarm_name if len(alarm_name) else ''
-        new_alarm.start_h = alarm_dict['start_h']
-        new_alarm.start_m = alarm_dict['start_m']
-        new_alarm.stop_h = alarm_dict['stop_h']
-        new_alarm.stop_m = alarm_dict['stop_m']
-        new_alarm.days = alarm_dict['days']
-        new_alarm.station_id = alarm_dict['station_id']
-        new_alarm.msg = alarm_dict['msg']
-        new_alarm.wake_up = True if alarm_dict['wake_up'] else False
-
-        return new_alarm
-
     def __janka_to_dict__(self, alarm_janka: AlarmInfo) -> dict:
         new_alarm = dict()
         new_alarm['start_h'] = alarm_janka.start_h
@@ -85,7 +68,7 @@ class Alarm:
         new_alarm['days'] = alarm_janka.days
         new_alarm['station_id'] = alarm_janka.station_id
         new_alarm['msg'] = alarm_janka.msg
-        new_alarm['wake_up'] = 1 if alarm_janka.wake_up else 0
+        new_alarm['wake_up'] = alarm_janka.wake_up
 
         return new_alarm
 
