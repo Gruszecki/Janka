@@ -3,6 +3,8 @@ import threading
 from alarm import Alarm
 from player import Player
 
+# TODO: Add voice assistant to main
+
 player = Player()
 alarm = Alarm()
 

@@ -11,6 +11,7 @@ import weather
 WAKE = 'janko'
 
 commands_list = {
+    # TODO: Add command for turning ON/OFF radio to voice assistant
     'say_time()': [
         'która godzina',
         'jaki mamy czas',
@@ -112,5 +113,5 @@ def say_daily_forecast() -> None:
     speak(weather.get_daily_forecast())
 
 def say_today_day() -> None:
-    # TODO: say_today_day() fonction, e.g. Dzisiaj jest 4 czerwca, niedziela
+    # TODO: say_today_day() function, e.g. Dzisiaj jest 4 czerwca, niedziela
     pass

@@ -13,6 +13,7 @@ class RadioStationIterator:
         self.__parsed_stations_list__ = self.__get_urls_from_file__()
 
     def __get_urls_from_file__(self):
+        # TODO: Change URL csv to json and make URL DataClass
         try:
             with open(URLS_PATH, encoding='utf-8') as urls:
                 raw_list = [list(map(str.strip, line.split(';'))) for line in urls]
