@@ -6,5 +6,5 @@
 * playing saved stations _(choosable with buttons and voice command)_
 * clock _(to see on an e-papper screen and choosable with voice command)_
 * setting alarm
-* weather prediction _(choosable with voice command)_
+* weather prediction using OpenWeather API _(choosable with voice command)_
 * Philips Hue lightning control _(choosable with voice command)_
