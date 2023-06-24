@@ -5,8 +5,8 @@ import time
 from dataclasses import dataclass
 from typing import Optional, Union
 
-import voice_assistant
 from settings import ALARMS_PATH
+from voice_assistant import VoiceAssistant as voice_assistant
 
 logging.basicConfig(level = logging.INFO)
 
@@ -27,7 +27,6 @@ class AlarmInfo:
 class Alarm:
     def __init__(self):
         self.alarms = self._get_alarms_from_json()
-        pp(self.alarms)
 
     def _get_alarms_from_json(self) -> Union[list, None]:
         with open(ALARMS_PATH) as f:
@@ -52,23 +51,22 @@ class Alarm:
         self.alarms.append(new_alarm)
 
         with open(ALARMS_PATH, 'w+') as f:
-            alarms_dict_to_dump = dict()
-            for alarm in self.alarms:
-                alarms_dict_to_dump[alarm.name] = self.__janka_to_dict__(alarm)
+            alarms_dict_to_dump = {alarm.name: self.__janka_to_dict__(alarm) for alarm in self.alarms}
 
             alarms_json = json.dumps(alarms_dict_to_dump, indent=4, ensure_ascii=False)
             f.write(alarms_json)
 
     def __janka_to_dict__(self, alarm_janka: AlarmInfo) -> dict:
-        new_alarm = dict()
-        new_alarm['start_h'] = alarm_janka.start_h
-        new_alarm['start_m'] = alarm_janka.start_m
-        new_alarm['stop_h'] = alarm_janka.stop_h
-        new_alarm['stop_m'] = alarm_janka.stop_m
-        new_alarm['days'] = alarm_janka.days
-        new_alarm['station_id'] = alarm_janka.station_id
-        new_alarm['msg'] = alarm_janka.msg
-        new_alarm['wake_up'] = alarm_janka.wake_up
+        new_alarm = {
+            'start_h': alarm_janka.start_h,
+            'start_m': alarm_janka.start_m,
+            'stop_h': alarm_janka.stop_h,
+            'stop_m': alarm_janka.stop_m,
+            'days': alarm_janka.days,
+            'station_id': alarm_janka.station_id,
+            'msg': alarm_janka.msg,
+            'wake_up': alarm_janka.wake_up
+        }
 
         return new_alarm
 

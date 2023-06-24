@@ -1,7 +1,8 @@
 import logging
 import vlc
+from typing import Union
 
-import voice_assistant
+from voice_assistant import VoiceAssistant as voice_assistant
 from settings import URLS_PATH
 
 logging.basicConfig(level = logging.INFO)
@@ -54,24 +55,27 @@ class RadioStationIterator:
 
         return self.curr
 
-    def get_specific_by_id(self, id: int) -> dict:
+    def get_specific_by_id(self, id: int) -> Union[dict, None]:
         try:
             self.curr = self.__parsed_stations_list__[id]
         except:
             logging.critical(f' Player: There is no id {id} in imported radio stations list!')
+            return None
 
         return self.curr
 
-    def get_specific_by_name(self, name: str) -> dict:
-        found_station = [station for station in self.__parsed_stations_list__ if station['name'].lower() == name.lower()]
+    def get_specific_by_name(self, name: str) -> Union[dict, None]:
+        found_station = [station for station in self.__parsed_stations_list__ if station['name'].lower() == name.strip().lower()]
 
         if len(found_station) == 1:
             self.curr = found_station[0]
             return self.curr
         elif len(found_station) == 0:
             voice_assistant.speak(f'Nie znaleziono stacji {name}')
+            return None
         else:
             logging.critical(f' Player: Name {name} is ambiguous')
+            return None
 
     def add_station(self, name: str, url: str) -> None:
         with open(URLS_PATH, 'r+') as read_file, open(URLS_PATH, 'a') as write_file:
@@ -126,11 +130,13 @@ class Player:
 
     def set_station_by_id(self, id: int):
         next_station = self.radio_control.get_specific_by_id(id)
-        self.__play_next_station__(next_station)
+        if next_station:
+            self.__play_next_station__(next_station)
 
     def set_station_by_name(self, name: str):
         next_station = self.radio_control.get_specific_by_name(name)
-        self.__play_next_station__(next_station)
+        if next_station:
+            self.__play_next_station__(next_station)
 
     def turn_off_radio(self):
         next_station = self.radio_control.get_specific_by_id(0)

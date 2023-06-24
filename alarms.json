@@ -22,9 +22,9 @@
         "wake_up": false
     },
     {
-        "name": "3",
-        "start_h": 11,
-        "start_m": 35,
+        "name": "èdüb≥o",
+        "start_h": 10,
+        "start_m": 46,
         "stop_h": 11,
         "stop_m": 59,
         "days": "1234567",
@@ -38,17 +38,6 @@
         "start_m": null,
         "stop_h": 22,
         "stop_m": 0,
-        "days": "1234567",
-        "station_id": null,
-        "msg": null,
-        "wake_up": false
-    },
-    {
-        "name": "èdüb≥o",
-        "start_h": 5,
-        "start_m": 25,
-        "stop_h": 5,
-        "stop_m": 30,
         "days": "1234567",
         "station_id": null,
         "msg": null,

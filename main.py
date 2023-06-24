@@ -2,11 +2,15 @@ import threading
 
 from alarm import Alarm
 from player import Player
+from voice_assistant import VoiceAssistant
 
-# TODO: Add voice assistant to main
 
 player = Player()
 alarm = Alarm()
+voice_assistant = VoiceAssistant(player)
+
+voice_assistant_thread = threading.Thread(target=voice_assistant.listen_all_the_time)
+voice_assistant_thread.start()
 
 alarm_thread = threading.Thread(target=alarm.start(player))
 alarm_thread.start()

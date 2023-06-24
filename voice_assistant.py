@@ -1,5 +1,6 @@
 import datetime
 import easyocr
+import logging
 import numpy as np
 import pyttsx3
 import speech_recognition as sr
@@ -8,110 +9,121 @@ from typing import Union
 import weather
 
 
-WAKE = 'janko'
+class VoiceAssistant:
+    def __init__(self, player):
+        self.player = player
+        self.WAKE = 'janko'
 
-commands_list = {
-    # TODO: Add command for turning ON/OFF radio to voice assistant
-    'say_time()': [
-        'która godzina',
-        'jaki mamy czas',
-        'która jest',
-        'jaki jest czas',
-    ],
-    'say_current_weather()': [
-        'jaka jest pogoda',
-        'podaj pogodę',
-        'pogoda',
-    ],
-    'say_daily_forecast()': [
-        'jaka będzie pogoda',
-        'prognoza pogody',
-        'podaj prognozę pogody',
-    ]
-}
+        self.commands_list = {
+            'self._radio_on_specific_station(text)': [
+                'włącz',
+            ],
+            'VoiceAssistant.say_time()': [
+                'która godzina',
+                'jaki mamy czas',
+                'która jest',
+                'jaki jest czas',
+            ],
+            'VoiceAssistant.say_current_weather()': [
+                'jaka jest pogoda',
+                'podaj pogodę',
+                'pogoda',
+            ],
+            'VoiceAssistant.say_daily_forecast()': [
+                'jaka będzie pogoda',
+                'prognoza pogody',
+                'podaj prognozę pogody',
+            ]
+        }
 
+    def _get_audio(self) -> str:
+        recognizer = sr.Recognizer()
+        with sr.Microphone() as source:
+            audio = recognizer.listen(source)
 
-def speak(text: str) -> None:
-    engine = pyttsx3.init()
-    engine.setProperty('rate', 170)
-    engine.say(text)
-    engine.runAndWait()
+            try:
+                said = recognizer.recognize_google(audio, language='pl-PL')
+            except sr.UnknownValueError:
+                logging.debug(" Voice assistant: Google Speech Recognition could not understand audio.")
+                return 'NOT UNDERSTOOD'
+            except sr.RequestError as e:
+                logging.error(' Voice assistant: Could not request results from Google Speech Recognition service:', str(e))
+                return 'ERROR'
 
-def get_audio() -> str:
-    recognizer = sr.Recognizer()
-    with sr.Microphone() as source:
-        audio = recognizer.listen(source)
+        return said.lower()
 
-        try:
-            said = recognizer.recognize_google(audio, language='pl-PL')
-        except sr.UnknownValueError:
-            print("Google Speech Recognition could not understand audio.")
-            return 'NOT UNDERSTOOD'
-        except sr.RequestError as e:
-            print('Could not request results from Google Speech Recognition service:', str(e))
-            return 'ERROR'
+    def _validate_text(self, text: str) -> Union[str, int]:
+        match text:
+            case 'NOT UNDERSTOOD':
+                VoiceAssistant.speak('Nie zrozumiałam.')
+                return 0
+            case 'ERROR':
+                VoiceAssistant.speak('Wystąpił błąd. Nie wiem co się dzieje.')
+                return 0
+            case _:
+                return text
 
-    return said.lower()
+    def _listen(self) -> int:
+        text = self._get_audio()
 
-def validate_text(text: str) -> Union[str, int]:
-    match text:
-        case 'NOT UNDERSTOOD':
-            speak('Nie zrozumiałam.')
-            return 0
-        case 'ERROR':
-            speak('Wystąpił błąd. Nie wiem co się dzieje.')
-            return 0
-        case _:
-            return text
+        if text.count(self.WAKE) > 0:
+            VoiceAssistant.speak('Tak?')
+            text = self._validate_text(self._get_audio())
+            logging.info(f' Voice assistant: got command: {text}')
+            result = self._execute_command(text) if text else None
 
-def listen() -> int:
-    # TODO: Simplify this function
-    text = get_audio()
+            if text and not result:
+                VoiceAssistant.speak(f'Nie znalazłam akcji dla: {text}')
 
-    if text.count(WAKE) > 0:
-        speak('Tak?')
-        text = validate_text(get_audio())
+        return 1
 
-        if text:
-            command_to_type = ''
-            commands_split = text.split(' i ')
-            commands = [command for command in commands_split if len(command)]
+    def _execute_command(self, text: str) -> int:
+        for key, value in self.commands_list.items():
+            for v in value:
+                if v in text:
+                    exec(f'{key}')
+                    return 1
 
-            if len(command_to_type):
-                commands.append(command_to_type)
+        return 0
 
-            for command in commands:
-                result = execute_command(command)
+    @staticmethod
+    def speak(text: str) -> None:
+        engine = pyttsx3.init()
+        engine.setProperty('rate', 170)
+        engine.say(text)
+        engine.runAndWait()
 
-                if not result:
-                    speak(f'Nie znalazłam akcji dla: {command}')
+    @staticmethod
+    def say_time() -> None:
+        time_now = str(datetime.datetime.now().time()).split(':')
+        hour = time_now[0]
+        minutes = time_now[1]
 
-    return 1
+        text = f'Jest godzina {hour}:{minutes}'
 
-def execute_command(text: str) -> int:
-    for key, value in commands_list.items():
-        for v in value:
-            if v in text:
-                exec(f'{key}')
-                return 1
+        VoiceAssistant.speak(text)
 
-    return 0
+    @staticmethod
+    def say_current_weather() -> None:
+        VoiceAssistant.speak(weather.get_current_weather_full_deccription())
 
-def say_time() -> None:
-    time_now = str(datetime.datetime.now().time()).split(':')
-    hour = time_now[0]
-    minutes = time_now[1]
+    @staticmethod
+    def say_daily_forecast() -> None:
+        VoiceAssistant.speak(weather.get_daily_forecast())
 
-    text = f'Jest godzina {hour}:{minutes}'
+    @staticmethod
+    def say_today_day() -> None:
+        # TODO: say_today_day() function, e.g. Dzisiaj jest 4 czerwca, niedziela
+        pass
 
-    speak(text)
+    def _radio_on_specific_station(self, text: str) -> None:
+        name = text[text.find(' '):]
+        self.player.set_station_by_name(name)
 
-def say_current_weather() -> None:
-    speak(weather.get_current_weather_full_deccription())
-
-def say_daily_forecast() -> None:
-    speak(weather.get_daily_forecast())
-
-def say_today_day() -> None:
-    # TODO: say_today_day() function, e.g. Dzisiaj jest 4 czerwca, niedziela
-    pass
+    def listen_all_the_time(self) -> None:
+        '''
+        This function listen to the voice in an infinite loop. It is meant to be called as a separate thread.
+        :return: None
+        '''
+        while True:
+            self._listen()
