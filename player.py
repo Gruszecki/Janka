@@ -71,7 +71,7 @@ class RadioStationIterator:
             self.curr = found_station[0]
             return self.curr
         elif len(found_station) == 0:
-            voice_assistant.speak(f'Nie znaleziono stacji {name}')
+            voice_assistant.speak(f'Nie znalazłam stacji {name}')
             return None
         else:
             logging.critical(f' Player: Name {name} is ambiguous')
@@ -117,33 +117,36 @@ class Player:
             self.media_player.stop()
             logging.info(' Player: Setting station. Initial station reached. Turning off the radio...')
 
-    def set_next_station(self):
+    def set_volume(self, value: int) -> None:
+        self.media_player.audio_set_volume(value)
+
+    def set_next_station(self) -> None:
         next_station = self.radio_control.get_next()
         self.__play_next_station__(next_station)
 
-    def set_prev_station(self):
+    def set_prev_station(self) -> None:
         next_station = self.radio_control.get_prev()
         self.__play_next_station__(next_station)
 
-    def get_curr_station(self):
+    def get_curr_station(self) -> dict:
         return self.radio_control.get_curr()
 
-    def set_station_by_id(self, id: int):
+    def set_station_by_id(self, id: int) -> None:
         next_station = self.radio_control.get_specific_by_id(id)
         if next_station:
             self.__play_next_station__(next_station)
 
-    def set_station_by_name(self, name: str):
+    def set_station_by_name(self, name: str) -> None:
         next_station = self.radio_control.get_specific_by_name(name)
         if next_station:
             self.__play_next_station__(next_station)
 
-    def turn_off_radio(self):
+    def turn_off_radio(self) -> None:
         next_station = self.radio_control.get_specific_by_id(0)
         self.__play_next_station__(next_station)
 
-    def add_new_station(self, name: str, url: str):
+    def add_new_station(self, name: str, url: str) -> None:
         self.radio_control.add_station(name, url)
 
-    def remove_station(self, id: int):
+    def remove_station(self, id: int) -> None:
         self.radio_control.remove_station(id)

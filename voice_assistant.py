@@ -1,4 +1,7 @@
 import datetime
+import random
+import time
+
 import easyocr
 import logging
 import numpy as np
@@ -18,6 +21,15 @@ class VoiceAssistant:
             'self._radio_on_specific_station(text)': [
                 'włącz',
             ],
+            'self._radio_off()': [
+                'wyłącz radio',
+            ],
+            'self._next_station()': [
+                'następna stacja',
+            ],
+            'self._prev_station()': [
+                'poprzednia stacja',
+            ],
             'VoiceAssistant.say_time()': [
                 'która godzina',
                 'jaki mamy czas',
@@ -27,7 +39,6 @@ class VoiceAssistant:
             'VoiceAssistant.say_current_weather()': [
                 'jaka jest pogoda',
                 'podaj pogodę',
-                'pogoda',
             ],
             'VoiceAssistant.say_daily_forecast()': [
                 'jaka będzie pogoda',
@@ -38,19 +49,32 @@ class VoiceAssistant:
 
     def _get_audio(self) -> str:
         recognizer = sr.Recognizer()
-        with sr.Microphone() as source:
-            audio = recognizer.listen(source)
+        recognizer.energy_threshold=1500
 
+        with sr.Microphone() as source:
+            audio = recognizer.listen(source)   # TODO: Consider using recognizer.listen_in_background.
             try:
                 said = recognizer.recognize_google(audio, language='pl-PL')
             except sr.UnknownValueError:
-                logging.debug(" Voice assistant: Google Speech Recognition could not understand audio.")
+                logging.debug(' Voice assistant: Google Speech Recognition could not understand audio.')
                 return 'NOT UNDERSTOOD'
             except sr.RequestError as e:
-                logging.error(' Voice assistant: Could not request results from Google Speech Recognition service:', str(e))
+                logging.error(f' Voice assistant: Could not request results from Google Speech Recognition service: {str(e)}')
+                return 'ERROR'
+            except Exception as e:
+                logging.error(f' Voice assistant: Exception occured: {str(e)}')
                 return 'ERROR'
 
         return said.lower()
+
+    @staticmethod
+    def speak(text: str) -> None:
+        engine = pyttsx3.init()
+        engine.setProperty('rate', 170)
+        engine.setProperty('volume', 1.0)
+        engine.say(text)
+        engine.runAndWait()     # TODO: Check .startLoop out. Maybe delay after Janka will be lower
+
 
     def _validate_text(self, text: str) -> Union[str, int]:
         match text:
@@ -67,13 +91,17 @@ class VoiceAssistant:
         text = self._get_audio()
 
         if text.count(self.WAKE) > 0:
+            self.player.set_volume(50)
             VoiceAssistant.speak('Tak?')
+
             text = self._validate_text(self._get_audio())
             logging.info(f' Voice assistant: got command: {text}')
             result = self._execute_command(text) if text else None
 
             if text and not result:
                 VoiceAssistant.speak(f'Nie znalazłam akcji dla: {text}')
+
+            self.player.set_volume(100)
 
         return 1
 
@@ -85,13 +113,6 @@ class VoiceAssistant:
                     return 1
 
         return 0
-
-    @staticmethod
-    def speak(text: str) -> None:
-        engine = pyttsx3.init()
-        engine.setProperty('rate', 170)
-        engine.say(text)
-        engine.runAndWait()
 
     @staticmethod
     def say_time() -> None:
@@ -119,6 +140,15 @@ class VoiceAssistant:
     def _radio_on_specific_station(self, text: str) -> None:
         name = text[text.find(' '):]
         self.player.set_station_by_name(name)
+
+    def _radio_off(self):
+        self.player.turn_off_radio()
+
+    def _next_station(self):
+        self.player.set_next_station()
+
+    def _prev_station(self):
+        self.player.set_prev_station()
 
     def listen_all_the_time(self) -> None:
         '''
