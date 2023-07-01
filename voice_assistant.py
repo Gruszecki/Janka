@@ -1,7 +1,4 @@
 import datetime
-import random
-import time
-
 import easyocr
 import logging
 import numpy as np
@@ -10,6 +7,8 @@ import speech_recognition as sr
 from typing import Union
 
 import weather
+
+logging.basicConfig(level = logging.INFO)
 
 
 class VoiceAssistant:
@@ -49,12 +48,14 @@ class VoiceAssistant:
 
     def _get_audio(self) -> str:
         recognizer = sr.Recognizer()
-        recognizer.energy_threshold=1500
+        recognizer.energy_threshold = 3000
 
         with sr.Microphone() as source:
+            logging.info(' Voice assistant: listening...')
             audio = recognizer.listen(source)   # TODO: Consider using recognizer.listen_in_background.
             try:
                 said = recognizer.recognize_google(audio, language='pl-PL')
+                logging.info(f' Voice asistant: heard: {said}')
             except sr.UnknownValueError:
                 logging.debug(' Voice assistant: Google Speech Recognition could not understand audio.')
                 return 'NOT UNDERSTOOD'
