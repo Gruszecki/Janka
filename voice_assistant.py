@@ -135,8 +135,21 @@ class VoiceAssistant:
 
     @staticmethod
     def say_today_day() -> None:
-        # TODO: say_today_day() function, e.g. Dzisiaj jest 4 czerwca, niedziela
-        pass
+        months = [
+            'stycznia', 'lutego', 'marca', 'kwietnia',
+            'maja', 'czerwca', 'lipca', 'sierpnia',
+            'września', 'października', 'listopada', 'grudnia'
+        ]
+
+        weekdays = [
+            'poniedziałek', 'wtorek', 'środa', 'czwartek',
+            'piątek', 'sobota', 'niedziela'
+        ]
+
+        today = datetime.datetime.now()
+        data_format = f'Dzisiaj jest {today.day} {months[today.month-1]}, {weekdays[today.weekday()]}'
+
+        VoiceAssistant.speak(data_format)
 
     def _radio_on_specific_station(self, text: str) -> None:
         name = text[text.find(' '):]

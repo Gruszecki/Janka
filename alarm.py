@@ -87,13 +87,15 @@ class Alarm:
                             logging.info(f' Alarm: Turning ON station id {alarm.station_id}, which is {curr_station["name"]}')
                         if alarm.wake_up:
                             player.set_volume(50)
-                            # TODO: Say what day is today
+                            voice_assistant.say_today_day()
                             voice_assistant.say_current_weather()
                             voice_assistant.say_daily_forecast()
+                            player.set_volume(100)
                         if alarm.msg:
                             player.set_volume(50)
                             logging.info(f' Alarm message: {alarm.msg}')
                             voice_assistant.speak(f'{alarm.msg}')
+                            player.set_volume(100)
 
                     elif time_now_h == alarm.stop_h and time_now_m == alarm.stop_m:
                         logging.info(f' Alarm: Today is {datetime.date.today()}, time: {time_now_h}:{time_now_m}')
