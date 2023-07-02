@@ -23,14 +23,14 @@
     },
     {
         "name": "èdüb≥o",
-        "start_h": 11,
-        "start_m": 15,
+        "start_h": 13,
+        "start_m": 6,
         "stop_h": 11,
         "stop_m": 59,
         "days": "1234567",
         "station_id": 3,
         "msg": "Dajecie czadu dalej.",
-        "wake_up": true
+        "wake_up": false
     },
     {
         "name": "spanko",

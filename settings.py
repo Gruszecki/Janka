@@ -1,5 +1,5 @@
 # Paths
-URLS_PATH = r'urls.csv'
+URLS_PATH = r'urls.json'
 ALARMS_PATH = r'alarms.json'
 
 # Weather data

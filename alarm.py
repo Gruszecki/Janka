@@ -29,12 +29,16 @@ class Alarm:
         self.alarms = self._get_alarms_from_json()
 
     def _get_alarms_from_json(self) -> Union[list, None]:
-        with open(ALARMS_PATH) as f:
-            alarms_dict = json.load(f)
+        try:
+            with open(ALARMS_PATH) as f:
+                alarms_dict = json.load(f)
 
-        alarms_list = [AlarmInfo(**alarm) for alarm in alarms_dict]
+            alarms_list = [AlarmInfo(**alarm) for alarm in alarms_dict]
 
-        return alarms_list
+            return alarms_list
+        except:
+            logging.error(' Player: Failed to open file with alarms or failed to parse json alarms to dataclass.')
+            return None
 
     def add_new_alarm(self,
                       name: Optional[str] = '',
@@ -49,15 +53,11 @@ class Alarm:
 
         new_alarm = AlarmInfo(name, start_h, start_m, stop_h, stop_m, days, station_id, msg, wake_up)
         self.alarms.append(new_alarm)
+        self._save_alarms_to_file()
 
-        with open(ALARMS_PATH, 'w+') as f:
-            alarms_dict_to_dump = {alarm.name: self.__janka_to_dict__(alarm) for alarm in self.alarms}
-
-            alarms_json = json.dumps(alarms_dict_to_dump, indent=4, ensure_ascii=False)
-            f.write(alarms_json)
-
-    def __janka_to_dict__(self, alarm_janka: AlarmInfo) -> dict:
-        new_alarm = {
+    def _janka_to_dict(self, alarm_janka: AlarmInfo) -> dict:
+        return {
+            'name': alarm_janka.name,
             'start_h': alarm_janka.start_h,
             'start_m': alarm_janka.start_m,
             'stop_h': alarm_janka.stop_h,
@@ -68,7 +68,11 @@ class Alarm:
             'wake_up': alarm_janka.wake_up
         }
 
-        return new_alarm
+    def _save_alarms_to_file(self):
+        with open(ALARMS_PATH, 'w+') as f:
+            alarms_dict_to_dump = [self._janka_to_dict(alarm) for alarm in self.alarms]
+            alarms_json = json.dumps(alarms_dict_to_dump, indent=4, ensure_ascii=False)
+            f.write(alarms_json)
 
     def start(self, player) -> None:
         while True:
@@ -84,7 +88,7 @@ class Alarm:
                         if alarm.station_id:
                             player.set_station_by_id(alarm.station_id)
                             curr_station = player.get_curr_station()
-                            logging.info(f' Alarm: Turning ON station id {alarm.station_id}, which is {curr_station["name"]}')
+                            logging.info(f' Alarm: Turning ON station id {alarm.station_id}, which is {curr_station.name}')
                         if alarm.wake_up:
                             player.set_volume(50)
                             voice_assistant.say_today_day()
@@ -96,7 +100,6 @@ class Alarm:
                             logging.info(f' Alarm message: {alarm.msg}')
                             voice_assistant.speak(f'{alarm.msg}')
                             player.set_volume(100)
-
                     elif time_now_h == alarm.stop_h and time_now_m == alarm.stop_m:
                         logging.info(f' Alarm: Today is {datetime.date.today()}, time: {time_now_h}:{time_now_m}')
                         logging.info(f' Alarm: Turning OFF the radio')

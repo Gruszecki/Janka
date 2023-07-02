@@ -1,71 +1,76 @@
+
+import json
 import logging
 import vlc
-from typing import Union
+from dataclasses import dataclass
+from typing import Union, Optional
 
 from voice_assistant import VoiceAssistant as voice_assistant
 from settings import URLS_PATH
 
-logging.basicConfig(level = logging.INFO)
+logging.basicConfig(level = logging.CRITICAL)
 
+
+@dataclass
+class RadioStationInfo:
+    id: int
+    name: str
+    url: str
 
 class RadioStationIterator:
     def __init__(self):
-        self.curr = {'id': 0, 'name': '', 'url': ''}
-        self.__parsed_stations_list__ = self.__get_urls_from_file__()
+        self.curr = RadioStationInfo(id=0, name='', url='')
+        self.__radio_stations_list__ = self.__get_urls_from_json__()
 
-    def __get_urls_from_file__(self):
-        # TODO: Change URL csv to json and make URL DataClass
+    def __get_urls_from_json__(self):
         try:
             with open(URLS_PATH, encoding='utf-8') as urls:
-                raw_list = [list(map(str.strip, line.split(';'))) for line in urls]
-            if raw_list:
-                radio_stations_list = [{'id': r_id, 'name': r_name, 'url': r_url} for r_id, r_name, r_url in raw_list if len(raw_list)]
-                radio_stations_list.insert(0, {'id': 0, 'name': '', 'url': ''})
-            else:
-                radio_stations_list = [{'id': 0, 'name': '', 'url': ''}]
-                logging.info('File with urls is empty.')
+                urls_dict = json.load(urls)
+
+            radio_stations_list = [RadioStationInfo(**radio_station) for radio_station in urls_dict]
+            radio_stations_list.insert(0, RadioStationInfo(id=0, name='', url=''))
 
             return radio_stations_list
 
         except:
-            logging.error(' Player: Failed to open file with urls or failed to parse raw urls to radio stations.')
+            logging.error(' Player: Failed to open file with urls or failed to parse json urls to dataclass.')
             return [self.curr]
 
 
-    def get_curr(self) -> dict:
+    def get_curr(self) -> RadioStationInfo:
         return self.curr
 
-    def get_next(self) -> dict:
-        curr_index = self.__parsed_stations_list__.index(self.curr)
+    def get_next(self) -> RadioStationInfo:
+        curr_index = self.__radio_stations_list__.index(self.curr)
 
-        if curr_index < len(self.__parsed_stations_list__) - 1:
-            self.curr = self.__parsed_stations_list__[curr_index + 1]
+        if curr_index < len(self.__radio_stations_list__) - 1:
+            self.curr = self.__radio_stations_list__[curr_index + 1]
         else:
-            self.curr = self.__parsed_stations_list__[0]
+            self.curr = self.__radio_stations_list__[0]
 
         return self.curr
 
-    def get_prev(self) -> dict:
-        curr_index = self.__parsed_stations_list__.index(self.curr)
+    def get_prev(self) -> RadioStationInfo:
+        curr_index = self.__radio_stations_list__.index(self.curr)
 
         if curr_index:
-            self.curr = self.__parsed_stations_list__[curr_index - 1]
+            self.curr = self.__radio_stations_list__[curr_index - 1]
         else:
-            self.curr = self.__parsed_stations_list__[len(self.__parsed_stations_list__) - 1]
+            self.curr = self.__radio_stations_list__[len(self.__radio_stations_list__) - 1]
 
         return self.curr
 
-    def get_specific_by_id(self, id: int) -> Union[dict, None]:
+    def get_specific_by_id(self, id: int) -> Union[RadioStationInfo, None]:
         try:
-            self.curr = self.__parsed_stations_list__[id]
+            self.curr = [station for station in self.__radio_stations_list__ if station.id == id][0]
         except:
             logging.critical(f' Player: There is no id {id} in imported radio stations list!')
             return None
 
         return self.curr
 
-    def get_specific_by_name(self, name: str) -> Union[dict, None]:
-        found_station = [station for station in self.__parsed_stations_list__ if station['name'].lower() == name.strip().lower()]
+    def get_specific_by_name(self, name: str) -> Union[RadioStationInfo, None]:
+        found_station = [station for station in self.__radio_stations_list__ if station.name.lower() == name.strip().lower()]
 
         if len(found_station) == 1:
             self.curr = found_station[0]
@@ -78,27 +83,37 @@ class RadioStationIterator:
             return None
 
     def add_station(self, name: str, url: str) -> None:
-        with open(URLS_PATH, 'r+') as read_file, open(URLS_PATH, 'a') as write_file:
-            read_file_list = list(read_file)
-            if len(read_file_list):
-                last_id = int(read_file_list[-1].split(';')[0])
-                write_file.write(f'\n{last_id + 1};{name};{url}')
-            else:
-                write_file.write(f'1;{name};{url}')
+        new_id = max(station.id for station in self.__radio_stations_list__) + 1
+        new_station = RadioStationInfo(id=new_id, name=name, url=url)
+        self.__radio_stations_list__.append(new_station)
+        self._save_radio_station_list_to_file()
 
-        self.__parsed_stations_list__ = self.__get_urls_from_file__()
+    def _station_to_dict(self, radio_info: RadioStationInfo) -> dict:
+        return {
+            'id': radio_info.id,
+            'name': radio_info.name,
+            'url': radio_info.url
+        }
+
+    def _save_radio_station_list_to_file(self, rs_list: Optional[list] = None):
+        with open(URLS_PATH, 'w+') as f:
+            if not rs_list:
+                urls_dict_to_dump = [self._station_to_dict(station) for station in self.__radio_stations_list__]
+            else:
+                urls_dict_to_dump = [self._station_to_dict(station) for station in rs_list]
+            urls_json = json.dumps(urls_dict_to_dump, indent=4, ensure_ascii=False)
+            f.write(urls_json)
 
     def remove_station(self, id: int) -> None:
-        with open(URLS_PATH, 'r') as read_file:
-            read_file_list = list(read_file)
+        try:
+            with open(URLS_PATH, 'r', encoding='utf-8') as read_file:
+                urls_dict = json.load(read_file)
 
-            new_stations_list = [station for station in read_file_list if str(id) != station.split(';')[0]]
-
-        with open(URLS_PATH, 'w') as write_file:
-            for station in new_stations_list:
-                write_file.write(station)
-
-        self.__parsed_stations_list__ = self.__get_urls_from_file__()
+            new_radio_stations_list = [RadioStationInfo(**radio_station) for radio_station in urls_dict if radio_station['id'] != id]
+            self._save_radio_station_list_to_file(new_radio_stations_list)
+            self.__radio_stations_list__ = self.__get_urls_from_json__()
+        except Exception as e:
+            logging.error(f'Something went wrong during removing station: {e}')
 
 
 class Player:
@@ -107,12 +122,12 @@ class Player:
         self.vlc_instance = vlc.Instance()
         self.media_player = self.vlc_instance.media_player_new()
 
-    def __play_next_station__(self, next_station: dict) -> None:
-        if next_station['id']:
-            media = self.vlc_instance.media_new(next_station['url'])
+    def __play_next_station__(self, next_station: RadioStationInfo) -> None:
+        if next_station.id:
+            media = self.vlc_instance.media_new(next_station.url)
             self.media_player.set_media(media)
             self.media_player.play()
-            logging.info(f' Player: Setting station: id: {next_station["id"]}, name: {next_station["name"]}')
+            logging.info(f' Player: Setting station: id: {next_station.id}, name: {next_station.name}')
         else:
             self.media_player.stop()
             logging.info(' Player: Setting station. Initial station reached. Turning off the radio...')
@@ -128,7 +143,7 @@ class Player:
         next_station = self.radio_control.get_prev()
         self.__play_next_station__(next_station)
 
-    def get_curr_station(self) -> dict:
+    def get_curr_station(self) -> RadioStationInfo:
         return self.radio_control.get_curr()
 
     def set_station_by_id(self, id: int) -> None:
