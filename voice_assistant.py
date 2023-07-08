@@ -6,6 +6,7 @@ import pyttsx3
 import speech_recognition as sr
 from typing import Union
 
+import hue
 import weather
 
 logging.basicConfig(level = logging.INFO)
@@ -16,9 +17,10 @@ class VoiceAssistant:
         self.player = player
         self.WAKE = 'janko'
 
+        # TODO: Do something with this ugly dict
         self.commands_list = {
             'self._radio_on_specific_station(text)': [
-                'włącz',
+                'włącz radio',
             ],
             'self._radio_off()': [
                 'wyłącz radio',
@@ -28,6 +30,20 @@ class VoiceAssistant:
             ],
             'self._prev_station()': [
                 'poprzednia stacja',
+            ],
+            'self._turn_on_lights()': [
+                'włącz światło',
+                'włącz światła'
+            ],
+            'self._turn_on_soft_lights()': [
+                'włącz delikatne światło',
+                'włącz delikatne światła',
+                'włącz światło nocne',
+                'włącz światła nocne'
+            ],
+            'self._turn_off_lights()': [
+                'wyłącz światło',
+                'wyłącz światła'
             ],
             'VoiceAssistant.say_time()': [
                 'która godzina',
@@ -46,6 +62,7 @@ class VoiceAssistant:
             ]
         }
 
+    # Private tools
     def _get_audio(self) -> str:
         recognizer = sr.Recognizer()
         recognizer.energy_threshold = 3000
@@ -67,15 +84,6 @@ class VoiceAssistant:
                 return 'ERROR'
 
         return said.lower()
-
-    @staticmethod
-    def speak(text: str) -> None:
-        engine = pyttsx3.init()
-        engine.setProperty('rate', 170)
-        engine.setProperty('volume', 1.0)
-        engine.say(text)
-        engine.runAndWait()     # TODO: Check .startLoop out. Maybe delay after Janka will be lower
-
 
     def _validate_text(self, text: str) -> Union[str, int]:
         match text:
@@ -115,6 +123,15 @@ class VoiceAssistant:
 
         return 0
 
+    # Statics
+    @staticmethod
+    def speak(text: str) -> None:
+        engine = pyttsx3.init()
+        engine.setProperty('rate', 170)
+        engine.setProperty('volume', 1.0)
+        engine.say(text)
+        engine.runAndWait()     # TODO: Check .startLoop out. Maybe delay after Janka will be lower
+
     @staticmethod
     def say_time() -> None:
         time_now = str(datetime.datetime.now().time()).split(':')
@@ -151,8 +168,10 @@ class VoiceAssistant:
 
         VoiceAssistant.speak(data_format)
 
+    # Private methods
     def _radio_on_specific_station(self, text: str) -> None:
-        name = text[text.find(' '):]
+        command = 'włącz radio '
+        name = text[len(command):]
         self.player.set_station_by_name(name)
 
     def _radio_off(self):
@@ -163,6 +182,28 @@ class VoiceAssistant:
 
     def _prev_station(self):
         self.player.set_prev_station()
+
+    @staticmethod
+    def _check_lights_connection(func):
+        def wrapper(args):
+            passed_wo_errors = func(args)
+
+            if not passed_wo_errors:
+                VoiceAssistant.speak('Połączenie ze światłem nie powiodło się. Naciśnij przycisk na mostku i spróbuj ponownie.')
+
+        return wrapper
+
+    @_check_lights_connection
+    def _turn_on_lights(self):
+        return hue.turn_on_lights()
+
+    @_check_lights_connection
+    def _turn_on_soft_lights(self):
+        return hue.turn_on_lights(brightness=1)
+
+    @_check_lights_connection
+    def _turn_off_lights(self):
+        return hue.turn_off_lights()
 
     def listen_all_the_time(self) -> None:
         '''
