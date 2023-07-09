@@ -69,7 +69,7 @@ class VoiceAssistant:
 
         with sr.Microphone() as source:
             logging.info(' Voice assistant: listening...')
-            audio = recognizer.listen(source)   # TODO: Consider using recognizer.listen_in_background.
+            audio = recognizer.listen(source=source, phrase_time_limit=5)
             try:
                 said = recognizer.recognize_google(audio, language='pl-PL')
                 logging.info(f' Voice asistant: heard: {said}')
@@ -130,7 +130,7 @@ class VoiceAssistant:
         engine.setProperty('rate', 170)
         engine.setProperty('volume', 1.0)
         engine.say(text)
-        engine.runAndWait()     # TODO: Check .startLoop out. Maybe delay after Janka will be lower
+        engine.runAndWait()
 
     @staticmethod
     def say_time() -> None:
