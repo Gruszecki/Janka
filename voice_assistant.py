@@ -1,4 +1,6 @@
 import datetime
+import time
+
 import easyocr
 import logging
 import numpy as np
@@ -63,6 +65,16 @@ class VoiceAssistant:
         }
 
     # Private tools
+    def _volume_gradient_asc(self, initial_volume: int = 50, target_volume: int = 100) -> None:
+        for value in range(initial_volume, target_volume + 1):
+            self.player.set_volume(value)
+            time.sleep(0.01)
+
+    def _volume_gradient_desc(self, initial_volume: int = 100, target_volume: int = 50) -> None:
+        for value in range(initial_volume, target_volume - 1, -1):
+            self.player.set_volume(value)
+            time.sleep(0.01)
+
     def _get_audio(self) -> str:
         recognizer = sr.Recognizer()
         recognizer.energy_threshold = 3000
@@ -100,7 +112,7 @@ class VoiceAssistant:
         text = self._get_audio()
 
         if text.count(self.WAKE) > 0:
-            self.player.set_volume(50)
+            self._volume_gradient_desc()
             VoiceAssistant.speak('Tak?')
 
             text = self._validate_text(self._get_audio())
@@ -110,7 +122,7 @@ class VoiceAssistant:
             if text and not result:
                 VoiceAssistant.speak(f'Nie znalazłam akcji dla: {text}')
 
-            self.player.set_volume(100)
+            self._volume_gradient_asc()
 
         return 1
 
