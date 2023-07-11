@@ -19,7 +19,7 @@ class RadioStationInfo:
 class RadioStationIterator:
     def __init__(self):
         self.curr = RadioStationInfo(id=0, name='', url='')
-        self.__radio_stations_list__ = self.__get_urls_from_json__()
+        self._radio_stations_list = self.__get_urls_from_json__()
 
     def __get_urls_from_json__(self):
         try:
@@ -40,28 +40,28 @@ class RadioStationIterator:
         return self.curr
 
     def get_next(self) -> RadioStationInfo:
-        curr_index = self.__radio_stations_list__.index(self.curr)
+        curr_index = self._radio_stations_list.index(self.curr)
 
-        if curr_index < len(self.__radio_stations_list__) - 1:
-            self.curr = self.__radio_stations_list__[curr_index + 1]
+        if curr_index < len(self._radio_stations_list) - 1:
+            self.curr = self._radio_stations_list[curr_index + 1]
         else:
-            self.curr = self.__radio_stations_list__[0]
+            self.curr = self._radio_stations_list[0]
 
         return self.curr
 
     def get_prev(self) -> RadioStationInfo:
-        curr_index = self.__radio_stations_list__.index(self.curr)
+        curr_index = self._radio_stations_list.index(self.curr)
 
         if curr_index:
-            self.curr = self.__radio_stations_list__[curr_index - 1]
+            self.curr = self._radio_stations_list[curr_index - 1]
         else:
-            self.curr = self.__radio_stations_list__[len(self.__radio_stations_list__) - 1]
+            self.curr = self._radio_stations_list[len(self._radio_stations_list) - 1]
 
         return self.curr
 
     def get_specific_by_id(self, id: int) -> Union[RadioStationInfo, None]:
         try:
-            self.curr = [station for station in self.__radio_stations_list__ if station.id == id][0]
+            self.curr = [station for station in self._radio_stations_list if station.id == id][0]
         except:
             logging.critical(f' Player: There is no id {id} in imported radio stations list!')
             return None
@@ -69,7 +69,7 @@ class RadioStationIterator:
         return self.curr
 
     def get_specific_by_name(self, name: str) -> Union[RadioStationInfo, None]:
-        found_station = [station for station in self.__radio_stations_list__ if station.name.lower() == name.strip().lower()]
+        found_station = [station for station in self._radio_stations_list if station.name.lower() == name.strip().lower()]
 
         if len(found_station) == 1:
             self.curr = found_station[0]
@@ -82,9 +82,9 @@ class RadioStationIterator:
             return None
 
     def add_station(self, name: str, url: str) -> None:
-        new_id = max(station.id for station in self.__radio_stations_list__) + 1
+        new_id = max(station.id for station in self._radio_stations_list) + 1
         new_station = RadioStationInfo(id=new_id, name=name, url=url)
-        self.__radio_stations_list__.append(new_station)
+        self._radio_stations_list.append(new_station)
         self._save_radio_station_list_to_file()
 
     def _station_to_dict(self, radio_info: RadioStationInfo) -> dict:
@@ -97,7 +97,7 @@ class RadioStationIterator:
     def _save_radio_station_list_to_file(self, rs_list: Optional[list] = None):
         with open(URLS_PATH, 'w+') as f:
             if not rs_list:
-                urls_dict_to_dump = [self._station_to_dict(station) for station in self.__radio_stations_list__]
+                urls_dict_to_dump = [self._station_to_dict(station) for station in self._radio_stations_list]
             else:
                 urls_dict_to_dump = [self._station_to_dict(station) for station in rs_list]
             urls_json = json.dumps(urls_dict_to_dump, indent=4, ensure_ascii=False)
@@ -110,7 +110,7 @@ class RadioStationIterator:
 
             new_radio_stations_list = [RadioStationInfo(**radio_station) for radio_station in urls_dict if radio_station['id'] != id]
             self._save_radio_station_list_to_file(new_radio_stations_list)
-            self.__radio_stations_list__ = self.__get_urls_from_json__()
+            self._radio_stations_list = self.__get_urls_from_json__()
         except Exception as e:
             logging.error(f'Something went wrong during removing station: {e}')
 

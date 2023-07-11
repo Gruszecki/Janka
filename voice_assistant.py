@@ -1,15 +1,15 @@
 import datetime
-import time
-
 import easyocr
 import logging
 import numpy as np
 import pyttsx3
 import speech_recognition as sr
+import time
 from typing import Union
 
 import hue
 import weather
+from voice_assistant_command_list import commands_list
 
 logging.basicConfig(level = logging.INFO)
 
@@ -18,51 +18,6 @@ class VoiceAssistant:
     def __init__(self, player):
         self.player = player
         self.WAKE = 'janko'
-
-        # TODO: Do something with this ugly dict
-        self.commands_list = {
-            'self._radio_on_specific_station(text)': [
-                'włącz radio',
-            ],
-            'self._radio_off()': [
-                'wyłącz radio',
-            ],
-            'self._next_station()': [
-                'następna stacja',
-            ],
-            'self._prev_station()': [
-                'poprzednia stacja',
-            ],
-            'self._turn_on_lights()': [
-                'włącz światło',
-                'włącz światła'
-            ],
-            'self._turn_on_soft_lights()': [
-                'włącz delikatne światło',
-                'włącz delikatne światła',
-                'włącz światło nocne',
-                'włącz światła nocne'
-            ],
-            'self._turn_off_lights()': [
-                'wyłącz światło',
-                'wyłącz światła'
-            ],
-            'VoiceAssistant.say_time()': [
-                'która godzina',
-                'jaki mamy czas',
-                'która jest',
-                'jaki jest czas',
-            ],
-            'VoiceAssistant.say_current_weather()': [
-                'jaka jest pogoda',
-                'podaj pogodę',
-            ],
-            'VoiceAssistant.say_daily_forecast()': [
-                'jaka będzie pogoda',
-                'prognoza pogody',
-                'podaj prognozę pogody',
-            ]
-        }
 
     # Private tools
     def _volume_gradient_asc(self, initial_volume: int = 50, target_volume: int = 100) -> None:
@@ -127,7 +82,7 @@ class VoiceAssistant:
         return 1
 
     def _execute_command(self, text: str) -> int:
-        for key, value in self.commands_list.items():
+        for key, value in commands_list.items():
             for v in value:
                 if v in text:
                     exec(f'{key}')
@@ -184,7 +139,11 @@ class VoiceAssistant:
     def _radio_on_specific_station(self, text: str) -> None:
         command = 'włącz radio '
         name = text[len(command):]
-        self.player.set_station_by_name(name)
+
+        if name:
+            self.player.set_station_by_name(name)
+        else:
+            VoiceAssistant.speak('Nie zrozumiałam nazwy radia.')
 
     def _radio_off(self):
         self.player.turn_off_radio()

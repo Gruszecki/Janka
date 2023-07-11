@@ -17,25 +17,25 @@ class PlayerTests(unittest.TestCase):
 
     def test_001_import_radio_stations(self):
         player = Player()
-        self.assertGreater(len(player.radio_control.__radio_stations_list__), 1)
+        self.assertGreater(len(player.radio_control._radio_stations_list), 1)
 
     def test_002_initial_station_only_when_no_stations_in_file(self):
         with open(URLS_PATH, 'w'):
             pass
 
         player = Player()
-        self.assertEqual(len(player.radio_control.__radio_stations_list__), 1)
+        self.assertEqual(len(player.radio_control._radio_stations_list), 1)
 
         player.set_next_station()
         self.assertEqual(player.get_curr_station().id, 0)
 
     def test_003_approach_initial_station_after_last_station(self):
         player = Player()
-        num_of_stations = len(player.radio_control.__radio_stations_list__)
+        num_of_stations = len(player.radio_control._radio_stations_list)
 
         if num_of_stations == 1:
             player.radio_control.add_station('Antyradio', 'https://an06.cdn.eurozet.pl/ant-web.mp3?t=1683367429522?redirected=06')
-            num_of_stations = len(player.radio_control.__radio_stations_list__)
+            num_of_stations = len(player.radio_control._radio_stations_list)
 
         for _ in range(num_of_stations):
             player.set_next_station()
@@ -44,7 +44,7 @@ class PlayerTests(unittest.TestCase):
 
     def test_004_approach_last_station_before_initial_station(self):
         player = Player()
-        num_of_stations = len(player.radio_control.__radio_stations_list__)
+        num_of_stations = len(player.radio_control._radio_stations_list)
 
         if num_of_stations == 1:
             player.radio_control.add_station('Antyradio', 'https://an06.cdn.eurozet.pl/ant-web.mp3?t=1683367429522?redirected=06')
@@ -56,7 +56,7 @@ class PlayerTests(unittest.TestCase):
     def test_005_set_next_station(self):
         player = Player()
 
-        if len(player.radio_control.__radio_stations_list__) == 1:
+        if len(player.radio_control._radio_stations_list) == 1:
             player.radio_control.add_station('Antyradio', 'https://an06.cdn.eurozet.pl/ant-web.mp3?t=1683367429522?redirected=06')
 
         player.set_next_station()
@@ -66,7 +66,7 @@ class PlayerTests(unittest.TestCase):
     def test_006_set_prev_station(self):
         player = Player()
 
-        if len(player.radio_control.__radio_stations_list__) == 1:
+        if len(player.radio_control._radio_stations_list) == 1:
             player.radio_control.add_station('Antyradio', 'https://an06.cdn.eurozet.pl/ant-web.mp3?t=1683367429522?redirected=06')
 
         player.set_next_station()
@@ -77,7 +77,7 @@ class PlayerTests(unittest.TestCase):
 
     def test_007_add_new_station_to_not_empty_file(self):
         player = Player()
-        num_of_stations = len(player.radio_control.__radio_stations_list__)
+        num_of_stations = len(player.radio_control._radio_stations_list)
         player.radio_control.add_station('Antyradio', 'https://an06.cdn.eurozet.pl/ant-web.mp3?t=1683367429522?redirected=06')
 
         for _ in range(num_of_stations + 1):
@@ -103,7 +103,7 @@ class PlayerTests(unittest.TestCase):
             pass
 
         player = Player()
-        self.assertEqual(len(player.radio_control.__radio_stations_list__), 1)
+        self.assertEqual(len(player.radio_control._radio_stations_list), 1)
 
         player.set_next_station()
         self.assertEqual(player.get_curr_station().id, 0)
@@ -111,13 +111,13 @@ class PlayerTests(unittest.TestCase):
     def test_010_remove_station(self):
         player = Player()
 
-        if len(player.radio_control.__radio_stations_list__) == 1:
+        if len(player.radio_control._radio_stations_list) == 1:
             player.radio_control.add_station('Antyradio', 'https://an06.cdn.eurozet.pl/ant-web.mp3?t=1683367429522?redirected=06')
 
-        number_of_stations_before_remove = len(player.radio_control.__radio_stations_list__)
-        last_id = max(station.id for station in player.radio_control.__radio_stations_list__)
+        number_of_stations_before_remove = len(player.radio_control._radio_stations_list)
+        last_id = max(station.id for station in player.radio_control._radio_stations_list)
         player.remove_station(last_id)
-        number_of_stations_after_remove = len(player.radio_control.__radio_stations_list__)
+        number_of_stations_after_remove = len(player.radio_control._radio_stations_list)
 
         self.assertGreater(number_of_stations_before_remove, number_of_stations_after_remove)
 
@@ -125,8 +125,8 @@ class PlayerTests(unittest.TestCase):
         player = Player()
 
         player.add_new_station('Testradio','https://an06.cdn.eurozet.pl/ant-web.mp3?t=1683367429522?redirected=06')
-        num_of_stations = len(player.radio_control.__radio_stations_list__)
-        added_id = player.radio_control.__radio_stations_list__[num_of_stations - 1]
+        num_of_stations = len(player.radio_control._radio_stations_list)
+        added_id = player.radio_control._radio_stations_list[num_of_stations - 1]
 
         player.set_station_by_id(added_id.id)
         current_station = player.get_curr_station()
