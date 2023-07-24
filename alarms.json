@@ -1,8 +1,8 @@
 [
     {
         "name": "Budzik",
-        "start_h": 7,
-        "start_m": 0,
+        "start_h": 6,
+        "start_m": 45,
         "stop_h": 7,
         "stop_m": 30,
         "days": "12345",
@@ -19,28 +19,6 @@
         "days": "12345",
         "station_id": null,
         "msg": "Nowy odcienek LS-a",
-        "wake_up": false
-    },
-    {
-        "name": "èdüb≥o",
-        "start_h": 13,
-        "start_m": 6,
-        "stop_h": 11,
-        "stop_m": 59,
-        "days": "1234567",
-        "station_id": 3,
-        "msg": "Dajecie czadu dalej.",
-        "wake_up": false
-    },
-    {
-        "name": "spanko",
-        "start_h": null,
-        "start_m": null,
-        "stop_h": 22,
-        "stop_m": 0,
-        "days": "1234567",
-        "station_id": null,
-        "msg": null,
         "wake_up": false
     }
 ]

@@ -82,10 +82,10 @@ class VoiceAssistant:
         return 1
 
     def _execute_command(self, text: str) -> int:
-        for key, value in commands_list.items():
-            for v in value:
-                if v in text:
-                    exec(f'{key}')
+        for command_instance in commands_list:
+            for command in command_instance.commands:
+                if command in text:
+                    exec(f'{command_instance.func}')
                     return 1
 
         return 0

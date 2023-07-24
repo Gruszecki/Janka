@@ -105,4 +105,4 @@ class Alarm:
                         logging.info(f' Alarm: Turning OFF the radio')
                         player.turn_off_radio()
 
-            time.sleep(10)
+            time.sleep(60)

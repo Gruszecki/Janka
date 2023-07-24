@@ -1,48 +1,67 @@
 # This Python file uses the following encoding: utf-8
+from dataclasses import dataclass
 
-commands_list = {
-    'self._radio_on_specific_station(text)': [
-        'włącz radio',
-    ],
-    'self._radio_off()': [
-        'wyłącz radio',
-    ],
-    'self._next_station()': [
-        'następna stacja',
-    ],
-    'self._prev_station()': [
-        'poprzednia stacja',
-    ],
-    'self._turn_on_lights()': [
-        'włącz światło',
-        'włącz światła'
-    ],
-    'self._turn_on_soft_lights()': [
-        'włącz delikatne światło',
-        'włącz delikatne światła',
-        'włącz światło nocne',
-        'włącz światła nocne'
-    ],
-    'self._turn_off_lights()': [
-        'wyłącz światło',
-        'wyłącz światła'
-    ],
-    'self._turn_on_light_color_loop()': [
-        'włącz pętlę kolorów'
-    ],
-    'VoiceAssistant.say_time()': [
-        'która godzina',
-        'jaki mamy czas',
-        'która jest',
-        'jaki jest czas',
-    ],
-    'VoiceAssistant.say_current_weather()': [
-        'jaka jest pogoda',
-        'podaj pogodę',
-    ],
-    'VoiceAssistant.say_daily_forecast()': [
-        'jaka będzie pogoda',
-        'prognoza pogody',
-        'podaj prognozę pogody',
-    ]
-}
+
+@dataclass
+class Command:
+    func: str
+    commands: list
+
+
+commands_list = [
+    Command(
+        func='self._radio_on_specific_station(text)',
+        commands=['włącz radio']
+    ),
+    Command(
+        func='self._radio_off()',
+        commands=['wyłącz radio']
+    ),
+    Command(
+        func='self._next_station()',
+        commands=['następna stacja']
+    ),
+    Command(
+        func='self._prev_station()',
+        commands=['poprzednia stacja']
+    ),
+    Command(
+        func='self._turn_on_lights()',
+        commands=['włącz światło',
+                  'włącz światła']
+    ),
+    Command(
+        func='self._turn_on_soft_lights()',
+        commands=['włącz delikatne światło',
+                  'włącz delikatne światła',
+                  'włącz światło nocne',
+                  'włącz światła nocne']
+    ),
+    Command(
+        func='self._turn_off_lights()',
+        commands=['wyłącz światło',
+                  'wyłącz światła']
+    ),
+    Command(
+        func='self._turn_on_light_color_loop()',
+        commands=['włącz pętlę kolorów']
+    ),
+    Command(
+        func='VoiceAssistant.say_time()',
+        commands=['która godzina',
+                  'jaki mamy czas',
+                  'która jest',
+                  'jaki jest czas',]
+    ),
+    Command(
+        func='VoiceAssistant.say_current_weather()',
+        commands=['jaka jest pogoda',
+                  'podaj pogodę']
+    ),
+    Command(
+        func='VoiceAssistant.say_daily_forecast()',
+        commands=['jaka będzie pogoda',
+                  'prognoza pogody',
+                  'podaj prognozę pogody']
+    )
+]
