@@ -176,6 +176,10 @@ class VoiceAssistant:
     def _turn_off_lights(self):
         return hue.turn_off_lights()
 
+    @_check_lights_connection
+    def _turn_on_light_color_loop(self):
+        return hue.turn_on_color_loop()
+
     def listen_all_the_time(self) -> None:
         '''
         This function listen to the voice in an infinite loop. It is meant to be called as a separate thread.

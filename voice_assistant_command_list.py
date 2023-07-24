@@ -27,6 +27,9 @@ commands_list = {
         'wyłącz światło',
         'wyłącz światła'
     ],
+    'self._turn_on_light_color_loop()': [
+        'włącz pętlę kolorów'
+    ],
     'VoiceAssistant.say_time()': [
         'która godzina',
         'jaki mamy czas',

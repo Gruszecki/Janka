@@ -45,3 +45,16 @@ def turn_off_lights() -> bool:
             light.on = False
         return True
     return False
+
+def turn_on_color_loop() -> bool:
+    lights = _connect_with_bridge()
+
+    if lights:
+        for light in lights:
+            light.on = True
+            light.brightness = 30
+            light.transitiontime = 10
+            light.effect = 'colorloop'
+        return True
+
+    return False
