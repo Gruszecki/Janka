@@ -33,7 +33,6 @@ python-bidi==0.4.2
 python-vlc==3.0.18122
 pyttsx3==2.90
 PyWavelets==1.4.1
-pywin32==306
 PyYAML==6.0
 requests==2.30.0
 scikit-image==0.20.0
