@@ -180,6 +180,11 @@ class VoiceAssistant:
     def _turn_on_light_color_loop(self):
         return hue.turn_on_color_loop()
 
+    @_check_lights_connection
+    def _goodnight(self):
+        VoiceAssistant.speak('Dobranoc')
+        return hue.turn_off_lights()
+
     def listen_all_the_time(self) -> None:
         '''
         This function listen to the voice in an infinite loop. It is meant to be called as a separate thread.

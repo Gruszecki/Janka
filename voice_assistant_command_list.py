@@ -47,6 +47,12 @@ commands_list = [
         commands=['włącz pętlę kolorów']
     ),
     Command(
+        func='self._goodnight()',
+        commands=['dobranoc',
+                  'idę spać',
+                  'idziemy spać']
+    ),
+    Command(
         func='VoiceAssistant.say_time()',
         commands=['która godzina',
                   'jaki mamy czas',
