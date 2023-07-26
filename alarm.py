@@ -38,7 +38,7 @@ class Alarm:
             return alarms_list
         except:
             logging.error(' Player: Failed to open file with alarms or failed to parse json alarms to dataclass.')
-            return []
+            return None
 
     def add_new_alarm(self,
                       name: Optional[str] = '',
@@ -75,6 +75,7 @@ class Alarm:
             f.write(alarms_json)
 
     def start(self, player) -> None:
+        player.set_next_station()       # TO DELETE
         while True:
             today = str(datetime.date.today().weekday() + 1)
             time_now_h = datetime.datetime.now().hour
