@@ -38,7 +38,7 @@ class Alarm:
             return alarms_list
         except:
             logging.error(' Player: Failed to open file with alarms or failed to parse json alarms to dataclass.')
-            return None
+            return []
 
     def add_new_alarm(self,
                       name: Optional[str] = '',
