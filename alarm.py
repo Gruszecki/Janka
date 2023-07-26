@@ -75,7 +75,6 @@ class Alarm:
             f.write(alarms_json)
 
     def start(self, player) -> None:
-        player.set_next_station()       # TO DELETE
         while True:
             today = str(datetime.date.today().weekday() + 1)
             time_now_h = datetime.datetime.now().hour
