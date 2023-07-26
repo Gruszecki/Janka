@@ -4,7 +4,7 @@ import logging
 import sys
 import time
 from configparser import ConfigParser
-from typing import Union
+from typing import Union, Optional
 from urllib import parse, request, error
 
 from settings import CITY, TEMP_UNIT
@@ -34,7 +34,7 @@ def _build_weather_query(mode: str) -> Union[str, None]:
 
     return url
 
-def get_weather_raw_data(mode: str) -> Union[json, None]:
+def get_weather_raw_data(mode: str) -> Optional[dict]:
     """
     Get weather data from OpenWeatherMap API.
     :param mode: 'current' for current weather or 'forecast' for daily weather
