@@ -75,6 +75,11 @@ class Alarm:
             f.write(alarms_json)
 
     def start(self, player) -> None:
+        voice_assistant.speak(f'Dzień dobry. Jestem Janka.')
+        time.sleep(1)
+        player.set_next_station()
+        time.sleep(20)
+        player.turn_off_radio()
         while True:
             today = str(datetime.date.today().weekday() + 1)
             time_now_h = datetime.datetime.now().hour
