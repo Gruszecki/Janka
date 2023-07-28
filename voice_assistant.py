@@ -34,7 +34,7 @@ class VoiceAssistant:
         recognizer = sr.Recognizer()
         recognizer.energy_threshold = 3000
 
-        with sr.Microphone(device_index=2) as source:
+        with sr.Microphone(device_index=0) as source:
             logging.info(' Voice assistant: listening...')
             audio = recognizer.listen(source=source, phrase_time_limit=5)
             try:
