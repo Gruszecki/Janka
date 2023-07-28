@@ -98,7 +98,6 @@ class VoiceAssistant:
         
         engine.setProperty('rate', 170)
         engine.setProperty('volume', 1.0)
-        engine.setProperty('language', 'pl-pl')
         engine.setProperty('voice', 'voice[1].id')
         engine.say(text)
         engine.runAndWait()
