@@ -94,11 +94,9 @@ class VoiceAssistant:
     @staticmethod
     def speak(text: str) -> None:
         engine = pyttsx3.init()
-        voices = engine.getProperty('voices')
-        
         engine.setProperty('rate', 170)
         engine.setProperty('volume', 1.0)
-        engine.setProperty('voice', 'voice[1].id')
+        engine.setProperty('voice', 'polish')
         engine.say(text)
         engine.runAndWait()
 
