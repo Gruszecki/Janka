@@ -96,6 +96,7 @@ class VoiceAssistant:
         engine = pyttsx3.init()
         engine.setProperty('rate', 170)
         engine.setProperty('volume', 1.0)
+        engine.setProperty('language', 'pl')
         engine.say(text)
         engine.runAndWait()
 
