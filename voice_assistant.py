@@ -32,7 +32,7 @@ class VoiceAssistant:
 
     def _get_audio(self) -> str:
         recognizer = sr.Recognizer()
-        recognizer.energy_threshold = 3000
+        recognizer.energy_threshold = 1000
 
         with sr.Microphone() as source:
             logging.info(' Voice assistant: listening...')
