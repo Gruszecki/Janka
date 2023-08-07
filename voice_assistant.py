@@ -30,9 +30,12 @@ class VoiceAssistant:
             self.player.set_volume(value)
             time.sleep(0.01)
 
+    def _mute(self):
+        self.player.set_volume(0)
+
     def _get_audio(self) -> str:
         recognizer = sr.Recognizer()
-        recognizer.energy_threshold = 300
+        recognizer.energy_threshold = 150
 
         with sr.Microphone() as source:
             logging.info(' Voice assistant: listening...')
@@ -47,7 +50,7 @@ class VoiceAssistant:
                 logging.error(f' Voice assistant: Could not request results from Google Speech Recognition service: {str(e)}')
                 return 'ERROR'
             except Exception as e:
-                logging.error(f' Voice assistant: Exception occured: {str(e)}')
+                logging.error(f' Voice assistant: Exception occurred: {str(e)}')
                 return 'ERROR'
 
         return said.lower()
@@ -98,6 +101,13 @@ class VoiceAssistant:
         engine.setProperty('volume', 1.0)
         engine.setProperty('voice', 'polish')
         engine.say(text)
+        engine.runAndWait()
+
+    @staticmethod
+    def dont_speak() -> None:
+        engine = pyttsx3.init()
+        engine.setProperty(name='volume', value=0.0)
+        engine.say('')
         engine.runAndWait()
 
     @staticmethod
@@ -184,6 +194,8 @@ class VoiceAssistant:
     @_check_lights_connection
     def _goodnight(self):
         VoiceAssistant.speak('Dobranoc')
+        VoiceAssistant.dont_speak()
+        self._mute()
         return hue.turn_off_lights()
 
     def listen_all_the_time(self) -> None:
