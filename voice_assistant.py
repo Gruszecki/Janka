@@ -107,7 +107,7 @@ class VoiceAssistant:
     def dont_speak() -> None:
         engine = pyttsx3.init()
         engine.setProperty('volume', 0.0)
-        # engine.say('')
+        engine.say('C')
         engine.runAndWait()
 
     @staticmethod
