@@ -106,9 +106,9 @@ class VoiceAssistant:
     @staticmethod
     def dont_speak() -> None:
         engine = pyttsx3.init()
-        engine.setProperty(name='volume', value=0.1)
-        engine.say('')
-        engine.runAndWait()
+        engine.setProperty('volume', 0.0)
+        # engine.say('')
+        # engine.runAndWait()
 
     @staticmethod
     def say_time() -> None:
