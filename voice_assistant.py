@@ -106,7 +106,7 @@ class VoiceAssistant:
     @staticmethod
     def dont_speak() -> None:
         engine = pyttsx3.init()
-        engine.setProperty(name='volume', value=0.0)
+        engine.setProperty(name='volume', value=0.1)
         engine.say('')
         engine.runAndWait()
 
@@ -194,7 +194,7 @@ class VoiceAssistant:
     @_check_lights_connection
     def _goodnight(self):
         VoiceAssistant.speak('Dobranoc')
-        # VoiceAssistant.dont_speak()
+        VoiceAssistant.dont_speak()
         self._mute()
         return hue.turn_off_lights()
 
