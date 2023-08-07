@@ -194,7 +194,7 @@ class VoiceAssistant:
     @_check_lights_connection
     def _goodnight(self):
         VoiceAssistant.speak('Dobranoc')
-        VoiceAssistant.dont_speak()
+        # VoiceAssistant.dont_speak()
         self._mute()
         return hue.turn_off_lights()
 
