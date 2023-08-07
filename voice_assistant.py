@@ -72,6 +72,8 @@ class VoiceAssistant:
             text = self._get_audio()
         else:
             time.sleep(5)
+            if datetime.datetime.now().hour == 6:
+                self.silent_mode = False
 
         if text.count(self.WAKE) > 0:
             self._volume_gradient_desc()
@@ -106,7 +108,6 @@ class VoiceAssistant:
         engine.setProperty('voice', 'polish')
         engine.say(text)
         engine.runAndWait()
-        self.silent_mode = False
 
     @staticmethod
     def dont_speak() -> None:
