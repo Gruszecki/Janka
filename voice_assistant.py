@@ -18,6 +18,7 @@ class VoiceAssistant:
     def __init__(self, player):
         self.player = player
         self.WAKE = 'janko'
+        self.silent_mode = False
 
     # Private tools
     def _volume_gradient_asc(self, initial_volume: int = 50, target_volume: int = 100) -> None:
@@ -67,7 +68,10 @@ class VoiceAssistant:
                 return text
 
     def _listen(self) -> int:
-        text = self._get_audio()
+        if not self.silent_mode:
+            text = self._get_audio()
+        else:
+            time.sleep(5)
 
         if text.count(self.WAKE) > 0:
             self._volume_gradient_desc()
@@ -102,6 +106,7 @@ class VoiceAssistant:
         engine.setProperty('voice', 'polish')
         engine.say(text)
         engine.runAndWait()
+        self.silent_mode = False
 
     @staticmethod
     def dont_speak() -> None:
@@ -193,9 +198,8 @@ class VoiceAssistant:
 
     @_check_lights_connection
     def _goodnight(self):
+        self.silent_mode = True
         VoiceAssistant.speak('Dobranoc')
-        VoiceAssistant.dont_speak()
-        self._mute()
         return hue.turn_off_lights()
 
     def listen_all_the_time(self) -> None:
