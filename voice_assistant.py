@@ -71,9 +71,10 @@ class VoiceAssistant:
         if not self.silent_mode:
             text = self._get_audio()
         else:
-            time.sleep(5)
+            text = ''
             if datetime.datetime.now().hour == 6:
                 self.silent_mode = False
+            time.sleep(5)
 
         if text.count(self.WAKE) > 0:
             self._volume_gradient_desc()
