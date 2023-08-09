@@ -74,12 +74,18 @@ class Alarm:
             alarms_json = json.dumps(alarms_dict_to_dump, indent=4, ensure_ascii=False)
             f.write(alarms_json)
 
+    def _volume_gradient_asc(self, player, initial_volume: int, target_volume: int) -> None:
+        for value in range(initial_volume, target_volume + 1):
+            player.set_volume(value)
+            time.sleep(0.01)
+
+    def _volume_gradient_desc(self, player, initial_volume: int, target_volume: int) -> None:
+        for value in range(initial_volume, target_volume - 1, -1):
+            player.set_volume(value)
+            time.sleep(0.01)
+
     def start(self, player) -> None:
         voice_assistant.speak(f'Dzień dobry. Jestem Janka.')
-        time.sleep(1)
-        player.set_next_station()
-        time.sleep(20)
-        player.turn_off_radio()
         while True:
             today = str(datetime.date.today().weekday() + 1)
             time_now_h = datetime.datetime.now().hour
@@ -94,20 +100,27 @@ class Alarm:
                             player.set_station_by_id(alarm.station_id)
                             curr_station = player.get_curr_station()
                             logging.info(f' Alarm: Turning ON station id {alarm.station_id}, which is {curr_station.name}')
+                            if not alarm.wake_up and not alarm.msg:
+                                self._volume_gradient_asc(player, 1, 100)
+                            else:
+                                self._volume_gradient_asc(player, 1, 50)
                         if alarm.wake_up:
-                            player.set_volume(50)
+                            if not alarm.station_id:
+                                self._volume_gradient_desc(player, 100, 50)
                             voice_assistant.say_today_day()
                             voice_assistant.say_current_weather()
                             voice_assistant.say_daily_forecast()
-                            player.set_volume(100)
+                            self._volume_gradient_asc(player, 50, 100)
                         if alarm.msg:
-                            player.set_volume(50)
+                            if not alarm.station_id or alarm.wake_up:
+                                self._volume_gradient_desc(player, 100, 50)
                             logging.info(f' Alarm message: {alarm.msg}')
                             voice_assistant.speak(f'{alarm.msg}')
-                            player.set_volume(100)
+                            self._volume_gradient_asc(player, 50, 100)
                     elif time_now_h == alarm.stop_h and time_now_m == alarm.stop_m:
                         logging.info(f' Alarm: Today is {datetime.date.today()}, time: {time_now_h}:{time_now_m}')
                         logging.info(f' Alarm: Turning OFF the radio')
+                        self._volume_gradient_desc(player, 100, 0)
                         player.turn_off_radio()
 
-            time.sleep(60)
+            time.sleep(10)
