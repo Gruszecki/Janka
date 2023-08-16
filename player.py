@@ -69,14 +69,15 @@ class RadioStationIterator:
 
         return self.curr
 
-    def get_specific_by_name(self, name: str) -> Union[RadioStationInfo, None]:
+    def get_specific_by_name(self, name: str, silent_check: bool = False) -> Union[RadioStationInfo, None]:
         found_station = [station for station in self._radio_stations_list if station.name.lower() == name.strip().lower()]
 
         if len(found_station) == 1:
             self.curr = found_station[0]
             return self.curr
         elif len(found_station) == 0:
-            voice_assistant.speak(f'Nie znalazłam stacji {name}')
+            if not silent_check:
+                voice_assistant.speak(f'Nie znalazłam stacji {name}')
             return None
         else:
             logging.critical(f' Player: Name {name} is ambiguous')
@@ -151,10 +152,12 @@ class Player:
         if next_station:
             self.__play_next_station__(next_station)
 
-    def set_station_by_name(self, name: str) -> None:
-        next_station = self.radio_control.get_specific_by_name(name)
+    def set_station_by_name(self, name: str, silent_check: bool = False) -> bool:
+        next_station = self.radio_control.get_specific_by_name(name, silent_check=silent_check)
         if next_station:
             self.__play_next_station__(next_station)
+            return True
+        return False
 
     def turn_off_radio(self) -> None:
         next_station = self.radio_control.get_specific_by_id(0)

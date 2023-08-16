@@ -154,14 +154,20 @@ class VoiceAssistant:
         VoiceAssistant.speak(data_format)
 
     # Private methods
-    def _radio_on_specific_station(self, text: str) -> None:
+    def _radio_on_specific_station(self, text: str) -> bool:
         command = 'włącz radio '
         name = text[len(command):]
 
         if name:
-            self.player.set_station_by_name(name)
+            first_try_result = self.player.set_station_by_name(f'radio {name}', silent_check=True)
+            if not first_try_result:
+                second_try_result = self.player.set_station_by_name(name)
+                if not second_try_result:
+                    return False
+            return True
         else:
             VoiceAssistant.speak('Nie zrozumiałam nazwy radia.')
+            return False
 
     def _radio_off(self):
         self.player.turn_off_radio()
