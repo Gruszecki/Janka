@@ -5,3 +5,7 @@ venv/
 
 # App
 secrets.ini
+
+# Local
+*.mp3
+pi@rpi.local

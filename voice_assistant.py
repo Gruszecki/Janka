@@ -1,15 +1,21 @@
 import datetime
-import easyocr
+import io
 import logging
 import numpy as np
-import pyttsx3
-import speech_recognition as sr
+import os
 import time
 from typing import Union
+
+import easyocr
+import pygame
+import pyttsx3
+import speech_recognition as sr
+from gtts import gTTS
 
 import hue
 import weather
 from voice_assistant_command_list import commands_list
+
 
 logging.basicConfig(level = logging.INFO)
 
@@ -103,19 +109,35 @@ class VoiceAssistant:
     # Statics
     @staticmethod
     def speak(text: str) -> None:
-        engine = pyttsx3.init()
-        engine.setProperty('rate', 170)
-        engine.setProperty('volume', 1.0)
-        engine.setProperty('voice', 'polish')
-        engine.say(text)
-        engine.runAndWait()
+        # engine = pyttsx3.init()
+        # engine.setProperty('rate', 170)
+        # engine.setProperty('volume', 1.0)
+        # engine.setProperty('voice', 'polish')
+        # engine.say(text)
+        # engine.runAndWait()
+
+        tts = gTTS(text=text, lang='pl')
+        tts.save('speak.mp3')
+
+        pygame.mixer.init()
+        pygame.mixer.music.set_volume(1.0)
+        pygame.mixer.music.load("speak.mp3")
+        pygame.mixer.music.play()
 
     @staticmethod
     def dont_speak() -> None:
-        engine = pyttsx3.init()
-        engine.setProperty('volume', 0.0)
-        engine.say('C')
-        engine.runAndWait()
+        # engine = pyttsx3.init()
+        # engine.setProperty('volume', 0.0)
+        # engine.say('C')
+        # engine.runAndWait()
+
+        tts = gTTS(text='c', lang='pl')
+        tts.save('speak.mp3')
+
+        pygame.mixer.init()
+        pygame.mixer.music.set_volume(0.0)
+        pygame.mixer.music.load("speak.mp3")
+        pygame.mixer.music.play()
 
     @staticmethod
     def say_time() -> None:
