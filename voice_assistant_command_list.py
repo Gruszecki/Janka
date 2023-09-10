@@ -28,19 +28,25 @@ commands_list = [
     Command(
         func='self._turn_on_lights()',
         commands=['włącz światło',
-                  'włącz światła']
+                  'włącz światła',
+                  'zapal światło',
+                  'zaświeć światło']
     ),
     Command(
         func='self._turn_on_soft_lights()',
         commands=['włącz delikatne światło',
                   'włącz delikatne światła',
+                  'zapal delikatne światło',
+                  'zaświeć delikatne światło',
                   'włącz światło nocne',
-                  'włącz światła nocne']
+                  'włącz światła nocne'
+                  ]
     ),
     Command(
         func='self._turn_off_lights()',
         commands=['wyłącz światło',
-                  'wyłącz światła']
+                  'wyłącz światła',
+                  'zgaś światło']
     ),
     Command(
         func='self._turn_on_light_color_loop()',
