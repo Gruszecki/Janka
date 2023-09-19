@@ -18,7 +18,18 @@
         "stop_m": null,
         "days": "12345",
         "station_id": null,
-        "msg": "Nowy odcienek LS-a",
+        "msg": "Nowy odcinek LS-a",
+        "wake_up": false
+    },
+        {
+        "name": "¯yrafy",
+        "start_h": 7,
+        "start_m": 45,
+        "stop_h": null,
+        "stop_m": null,
+        "days": "1234567",
+        "station_id": null,
+        "msg": "¯yrafy zosta³y upowa¿nione do wejœcia do szafy",
         "wake_up": false
     }
 ]
