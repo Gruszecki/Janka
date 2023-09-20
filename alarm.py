@@ -124,4 +124,4 @@ class Alarm:
                         self._volume_gradient_desc(player, 100, 0)
                         player.turn_off_radio()
 
-            time.sleep(10)
+            time.sleep(60)
