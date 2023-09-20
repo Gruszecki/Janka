@@ -24,12 +24,12 @@
         {
         "name": "Żyrafy",
         "start_h": 22,
-        "start_m": 33,
+        "start_m": 35,
         "stop_h": null,
         "stop_m": null,
         "days": "1234567",
         "station_id": null,
-        "msg": "Rzyrafy zostaly upowarznione do wejscia do szafy",
+        "msg": "Rzyrafy oczekujom na upowarznienie do wejscia do szafy",
         "wake_up": false
     }
 ]
