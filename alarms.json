@@ -20,16 +20,5 @@
         "station_id": null,
         "msg": "Nowy odcinek LS-a",
         "wake_up": false
-    },
-        {
-        "name": "Żyrafy",
-        "start_h": 7,
-        "start_m": 45,
-        "stop_h": null,
-        "stop_m": null,
-        "days": "1234567",
-        "station_id": null,
-        "msg": "Rzyrafy oczekujom na upowarznienie do wejscia do szafy",
-        "wake_up": false
     }
 ]
