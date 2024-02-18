@@ -23,7 +23,7 @@ def run():
 			draw.text((40, 150), current_time, font=font, fill=0)
 
 			epd.displayPart(epd.getbuffer(image))
-			time.sleep(1)
+			time.sleep(0.5)
 
 	except IOError as e:
 		print(e)
