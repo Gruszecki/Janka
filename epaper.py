@@ -1,7 +1,7 @@
 # -*-  coding:utf-8 -*-
 import time
 from PIL import Image, ImageDraw, ImageFont
-import os
+
 from waveshare_epd import epd1in54_V2
 
 
@@ -18,12 +18,9 @@ def run():
 
 		while True:
 			draw.rectangle((0, 0, epd.height, epd.width), fill=255)
-			if os.path.isfile('images/radio_1.bmp'):
-				draw.text((0, 0), 'yes', font=font, fill=0)
-			else:
-				draw.text((0, 0), 'no', font=font, fill=0)
-			# logo = Image.open('images/radio_1.bmp')
-			# epd.displayPart(epd.getbuffer(logo))
+			
+			logo = Image.open('images/radio_1.bmp')
+			image.paste(logo, (100, 100))
 
 			current_time = time.strftime('%H:%M:%S')
 			draw.text((40, 150), current_time, font=font, fill=0)
