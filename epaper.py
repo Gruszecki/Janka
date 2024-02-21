@@ -28,8 +28,7 @@ def run():
 
 			radio_name_width = font.getsize('Radio Nowy Swiat')[0]
 			if radio_name_width > 200:
-				radio_name_pos -= 5
-				radio_name_pos = 0 if radio_name_pos <= -radio_name_width
+				radio_name_pos = 0 if radio_name_pos <= -radio_name_width else radio_name_pos - 5
 
 			current_time = time.strftime('%H:%M:%S')
 			draw.text((40, 150), current_time, font=font, fill=0)
