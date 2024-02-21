@@ -22,12 +22,14 @@ def run():
 			draw.rectangle((0, 0, epd.height, epd.width), fill=255)
 			
 			logo = Image.open('images/radio_1.bmp')
-			
 			image.paste(logo, (50, 0))
 			
+			draw.text((radio_name_pos, 110), 'Radio Nowy Swiat', font=font, fill=0)
 
-			if font.getsize('Radio Nowy Swiat')[0] > 200:
-				draw.text((radio_name_pos, 110), 'Radio Nowy Swiat', font=font, fill=0)
+			radio_name_width = font.getsize('Radio Nowy Swiat')[0]
+			if radio_name_width > 200:
+				radio_name_pos -= 5
+				radio_name_pos = 0 if radio_name_pos <= -radio_name_width
 
 			current_time = time.strftime('%H:%M:%S')
 			draw.text((40, 150), current_time, font=font, fill=0)
