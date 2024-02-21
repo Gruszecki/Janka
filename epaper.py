@@ -16,11 +16,11 @@ def run():
 		draw = ImageDraw.Draw(image)
 		font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 24)
 
-		logo = Image.open('images/radio_1.bmp)
-		epd.display(epd.getbuffer(logo)
-
 		while True:
 			draw.rectangle((0, 0, epd.height, epd.width), fill=255)
+
+			logo = Image.open('images/radio_1.bmp')
+			epd.displayPart(epd.getbuffer(logo))
 
 			current_time = time.strftime('%H:%M:%S')
 			draw.text((40, 150), current_time, font=font, fill=0)
