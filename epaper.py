@@ -37,10 +37,10 @@ def run(player) -> None:
 				radio_name_width = font.getsize(player.get_curr_station().name)[0]
 				
 				if radio_name_width > 200:
-					if radio_name_pos + int(radio_name_width * 1.5) > 0:
-						radio_name_pos -= 10
-						radio_name_pos_bis = radio_name_pos + int(radio_name_width * 1.5)
-					else:
+					radio_name_pos -= 10
+					radio_name_pos_bis = radio_name_pos + radio_name_width + 50
+					
+					if radio_name_pos_bis <= 0:
 						radio_name_pos = 0
 						radio_name_pos_bis = 0
 					
