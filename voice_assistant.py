@@ -194,11 +194,15 @@ class VoiceAssistant:
 
     @_check_lights_connection
     def _turn_on_lights(self):
-        return hue.turn_on_lights()
+        return hue.turn_on_lights(brightness=254)
 
     @_check_lights_connection
     def _turn_on_soft_lights(self):
         return hue.turn_on_lights(brightness=1)
+
+    @_check_lights_connection
+    def _turn_on_mid_lights(self):
+        return hue.turn_on_lights(brightness=80)
 
     @_check_lights_connection
     def _turn_off_lights(self):
