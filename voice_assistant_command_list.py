@@ -43,6 +43,13 @@ commands_list = [
                   ]
     ),
     Command(
+        func='self._turn_on_mid_lights()',
+        commands=['włącz średnie światło',
+                  'włącz średnie światła',
+                  'zapal średnie światło',
+                  'zaświeć średnie światło']
+    ),
+    Command(
         func='self._turn_off_lights()',
         commands=['wyłącz światło',
                   'wyłącz światła',
