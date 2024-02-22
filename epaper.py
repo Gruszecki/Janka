@@ -25,17 +25,20 @@ def run(player) -> None:
 			if player.get_curr_station().id != curr_station_id:
 				curr_station_id = player.get_curr_station().id 
 				radio_name_pos = 0
+
+			logo = Image.open(f'images/radio_{curr_station_id}.bmp')
 			
 			if curr_station_id:
-				logo = Image.open(f'images/radio_{curr_station_id}.bmp')
 				image.paste(logo, (50, 0))
-				
+	
 				draw.text((radio_name_pos, 110), player.get_curr_station().name, font=font, fill=0)
 	
 				radio_name_width = font.getsize(player.get_curr_station().name)[0]
 				if radio_name_width > 200:
 					radio_name_pos = 0 if radio_name_pos + radio_name_width <= 0 else radio_name_pos - 10
-
+			else:
+				image.paste(logo, (25, 0))
+	
 			current_time = time.strftime('%H:%M:%S')
 			draw.text((40, 150), current_time, font=font, fill=0)
 
