@@ -16,13 +16,18 @@ def run(player) -> None:
 		draw = ImageDraw.Draw(image)
 		font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 24)
 
+		curr_station_id = 0
 		radio_name_pos = 0
 
 		while True:
 			draw.rectangle((0, 0, epd.height, epd.width), fill=255)
 
-			if player.get_curr_station().id:
-				logo = Image.open(f'images/radio_{player.get_curr_station().id}.bmp')
+			if player.get_curr_station().id != curr_station_id:
+				curr_station_id = player.get_curr_station().id 
+				radio_name_pos = 0
+			
+			if curr_station_id:
+				logo = Image.open(f'images/radio_{curr_station_id}.bmp')
 				image.paste(logo, (50, 0))
 				
 				draw.text((radio_name_pos, 110), player.get_curr_station().name, font=font, fill=0)
