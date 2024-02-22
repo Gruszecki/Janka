@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw, ImageFont
 from waveshare_epd import epd1in54_V2
 
 
-def run():
+def run(player) -> None:
 	try:
 		epd = epd1in54_V2.EPD()
 		epd.init(0)
