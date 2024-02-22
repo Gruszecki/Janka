@@ -18,6 +18,7 @@ def run(player) -> None:
 
 		curr_station_id = 0
 		radio_name_pos = 0
+		radio_name_pos_bis = 0
 
 		while True:
 			draw.rectangle((0, 0, epd.height, epd.width), fill=255)
@@ -34,8 +35,11 @@ def run(player) -> None:
 				draw.text((radio_name_pos, 110), player.get_curr_station().name, font=font, fill=0)
 	
 				radio_name_width = font.getsize(player.get_curr_station().name)[0]
+				
 				if radio_name_width > 200:
-					radio_name_pos = 0 if radio_name_pos + radio_name_width <= 0 else radio_name_pos - 10
+					radio_name_pos = 0 if radio_name_pos + int(radio_name_width * 1.5) <= 0 else radio_name_pos - 10
+					radio_name_pos_bis = radio_name_pos + int(radio_name_width * 1.5)
+					draw.text((radio_name_pos_bis, 110), player.get_curr_station().name, font=font, fill=0)
 			else:
 				image.paste(logo, (25, 0))
 	
