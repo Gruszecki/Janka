@@ -33,6 +33,7 @@ def turn_on_lights(brightness: int = 100) -> bool:
             light.on = True
             light.brightness = brightness
             light.xy = (0.5, 0.4)
+            light.effect = None
         return True
 
     return False
@@ -53,7 +54,7 @@ def turn_on_color_loop() -> bool:
         for light in lights:
             light.on = True
             light.brightness = 30
-            light.transitiontime = 10
+            light.transitiontime = 100
             light.effect = 'colorloop'
         return True
 
