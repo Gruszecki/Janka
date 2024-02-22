@@ -212,6 +212,7 @@ class VoiceAssistant:
     def _goodnight(self):
         self.silent_mode = True
         VoiceAssistant.speak('Dobranoc')
+        player.turn_off_radio()
         return hue.turn_off_lights()
 
     def listen_all_the_time(self) -> None:
