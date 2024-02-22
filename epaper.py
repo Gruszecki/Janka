@@ -21,12 +21,12 @@ def run(player) -> None:
 		while True:
 			draw.rectangle((0, 0, epd.height, epd.width), fill=255)
 			
-			logo = Image.open('images/radio_1.bmp')
+			logo = Image.open(f'images/radio_{player.get_curr_station().id}.bmp')
 			image.paste(logo, (50, 0))
 			
-			draw.text((radio_name_pos, 110), 'Radio Nowy Swiat', font=font, fill=0)
+			draw.text((radio_name_pos, 110), player.get_curr_station().name, font=font, fill=0)
 
-			radio_name_width = font.getsize('Radio Nowy Swiat')[0]
+			radio_name_width = font.getsize(player.get_curr_station().name)[0]
 			if radio_name_width > 200:
 				radio_name_pos = 0 if radio_name_pos + radio_name_width <= 0 else radio_name_pos - 10
 
