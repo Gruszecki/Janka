@@ -11,6 +11,17 @@
         "wake_up": true
     },
     {
+        "name": "Budzik weekend",
+        "start_h": 8,
+        "start_m": 0,
+        "stop_h": 8,
+        "stop_m": 30,
+        "days": "67",
+        "station_id": 1,
+        "msg": null,
+        "wake_up": true
+    },
+    {
         "name": "LS",
         "start_h": 18,
         "start_m": 0,
