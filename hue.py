@@ -21,6 +21,8 @@ def _connect_with_bridge():
     return b.get_light_objects()
 
 def _print_available_lights():
+    lights = _connect_with_bridge()
+    
     print('Available lights:')
     for light in lights:
         print(f'- {light.name} ({light.light_id})')
