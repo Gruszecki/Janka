@@ -69,7 +69,7 @@ def get_current_weather_full_deccription() -> str:
 
     if weather_data:
         weather_desc = f'Pogoda dla miejscowości {CITY}. Stan na godzinę {local_time.tm_hour}:{str(local_time.tm_min).zfill(2)}. ' \
-                       f'{weather_data["weather"][0]["description"]}. ' \
+                       f'{weather_data["weather"][0]["description"].capitalize()}. ' \
                        f'Temperatura wynosi {weather_data["main"]["temp"]: .1f}°C. ' \
                        f'Temperatura odczuwalna: {weather_data["main"]["feels_like"]: .1f}°C. ' \
                        f'Zachmurzenie {weather_data["clouds"]["all"]}%. ' \
