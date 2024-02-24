@@ -69,8 +69,8 @@ def run(player) -> None:
 			draw.text((weather_pos, 180), current_weather, font=font_weather, fill=0)
 			draw.text((weather_pos_bis, 180), current_weather, font=font_weather, fill=0)
 
-			weather_pos -= 10
-			weather_pos_bis -= 10
+			weather_pos -= 50
+			weather_pos_bis -= 50
 
 			if weather_pos_bis <= 0:
 				weather_pos = 0
