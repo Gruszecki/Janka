@@ -68,14 +68,14 @@ def get_current_weather_full_deccription() -> str:
     weather_data = get_weather_raw_data('current')
 
     if weather_data:
-        weather_desc = f'Pogoda dla miejscowości {CITY}. Stan na godzinę {local_time.tm_hour}:{str(local_time.tm_min).zfill(2)} . ' \
+        weather_desc = f'Pogoda dla miejscowości {CITY}. Stan na godzinę {local_time.tm_hour}:{str(local_time.tm_min).zfill(2)}. ' \
                        f'{weather_data["weather"][0]["description"]}. ' \
-                       f'Temperatura wynosi {weather_data["main"]["temp"]: .1f}°C . ' \
-                       f'Temperatura odczuwalna: {weather_data["main"]["feels_like"]: .1f}°C . ' \
+                       f'Temperatura wynosi {weather_data["main"]["temp"]: .1f}°C. ' \
+                       f'Temperatura odczuwalna: {weather_data["main"]["feels_like"]: .1f}°C. ' \
                        f'Zachmurzenie {weather_data["clouds"]["all"]}%. ' \
                        f'Prędkość wiatru {weather_data["wind"]["speed"]: .1f} m/s. ' \
                        f'Wilgotność powietrza {weather_data["main"]["humidity"]}%. ' \
-                       f'Wschód słońca: {time.localtime(weather_data["sys"]["sunrise"]).tm_hour}:{str(time.localtime(weather_data["sys"]["sunrise"]).tm_min).zfill(2)} . ' \
+                       f'Wschód słońca: {time.localtime(weather_data["sys"]["sunrise"]).tm_hour}:{str(time.localtime(weather_data["sys"]["sunrise"]).tm_min).zfill(2)}. ' \
                        f'Zachód słońca: {time.localtime(weather_data["sys"]["sunset"]).tm_hour}:{str(time.localtime(weather_data["sys"]["sunset"]).tm_min).zfill(2)}.'
 
         return weather_desc
@@ -131,13 +131,13 @@ def get_daily_forecast():
     if any([morn, day, eve, night]):
         full_string = ''
         if morn:
-            full_string += f'Rano: {morn["temp"]: .1f}°C . {morn["desc"]}. '
+            full_string += f'Rano: {morn["temp"]: .1f}°C. {morn["desc"]}. '
         if day:
-            full_string += f'W południe: {day["temp"]: .1f}°C . {day["desc"]}. '
+            full_string += f'W południe: {day["temp"]: .1f}°C. {day["desc"]}. '
         if eve:
-            full_string += f'Wieczorem: {eve["temp"]: .1f}°C . {eve["desc"]}. '
+            full_string += f'Wieczorem: {eve["temp"]: .1f}°C. {eve["desc"]}. '
         if night:
-            full_string += f'W nocy: {night["temp"]: .1f}°C . {night["desc"]}. '
+            full_string += f'W nocy: {night["temp"]: .1f}°C. {night["desc"]}. '
 
         return full_string
     else:
