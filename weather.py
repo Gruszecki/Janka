@@ -76,7 +76,7 @@ def get_current_weather_full_deccription() -> str:
                        f'Prędkość wiatru {weather_data["wind"]["speed"]: .1f} m/s. ' \
                        f'Wilgotność powietrza {weather_data["main"]["humidity"]}%. ' \
                        f'Wschód słońca: {time.localtime(weather_data["sys"]["sunrise"]).tm_hour}:{str(time.localtime(weather_data["sys"]["sunrise"]).tm_min).zfill(2)}. ' \
-                       f'Zachód słońca: {time.localtime(weather_data["sys"]["sunset"]).tm_hour}:{str(time.localtime(weather_data["sys"]["sunset"]).tm_min).zfill(2)}.'
+                       f'Zachód słońca: {time.localtime(weather_data["sys"]["sunset"]).tm_hour}:{str(time.localtime(weather_data["sys"]["sunset"]).tm_min).zfill(2)}. '
 
         return weather_desc
     else:
