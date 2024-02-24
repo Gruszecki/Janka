@@ -100,22 +100,22 @@ def get_raw_daily_forecast():
                 case 7 | 8 | 9:
                     morn = {
                         'temp': entry['main']['temp'],
-                        'desc': entry['weather'][0]['description']
+                        'desc': entry['weather'][0]['description'].capitalize()
                     }
                 case 11 | 12 | 13:
                     day = {
                         'temp': entry['main']['temp'],
-                        'desc': entry['weather'][0]['description']
+                        'desc': entry['weather'][0]['description'].capitalize()
                     }
                 case 17 | 18 | 19:
                     eve = {
                         'temp': entry['main']['temp'],
-                        'desc': entry['weather'][0]['description']
+                        'desc': entry['weather'][0]['description'].capitalize()
                     }
                 case 2 | 3 | 4:
                     night = {
                         'temp': entry['main']['temp'],
-                        'desc': entry['weather'][0]['description']
+                        'desc': entry['weather'][0]['description'].capitalize()
                     }
 
             if 2 <= dt <= 4 :  # We reached to the end of the day (night actually)
