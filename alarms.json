@@ -5,19 +5,8 @@
         "start_m": 45,
         "stop_h": 7,
         "stop_m": 30,
-        "days": "123",
+        "days": "1234",
         "station_id": 1,
-        "msg": null,
-        "wake_up": true
-    },
-    {
-        "name": "Budzik w czwartek",
-        "start_h": 6,
-        "start_m": 45,
-        "stop_h": 7,
-        "stop_m": 30,
-        "days": "4",
-        "station_id": 2,
         "msg": null,
         "wake_up": true
     },
