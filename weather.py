@@ -1,11 +1,10 @@
-import datetime
 import json
 import logging
-import sys
 import time
 from configparser import ConfigParser
 from typing import Union, Optional
 from urllib import parse, request, error
+from urllib.error import URLError
 
 from settings import CITY, TEMP_UNIT
 
@@ -60,11 +59,16 @@ def _get_weather_raw_data(mode: str) -> Optional[dict]:
         logging.error(' Cannot parse server response.')
         weather_data = None
 
+    except URLError:
+        logging.error('Currently weather prediction is not available. Internet issue possible.')
+        weather_data = None
+
     return weather_data
 
 
 def get_current_weather_full_deccription() -> str:
     local_time = time.localtime(time.time())
+
     weather_data = _get_weather_raw_data('current')
 
     if weather_data:
@@ -77,7 +81,6 @@ def get_current_weather_full_deccription() -> str:
                        f'Wilgotność powietrza {weather_data["main"]["humidity"]}%. ' \
                        f'Wschód słońca: {time.localtime(weather_data["sys"]["sunrise"]).tm_hour}:{str(time.localtime(weather_data["sys"]["sunrise"]).tm_min).zfill(2)}. ' \
                        f'Zachód słońca: {time.localtime(weather_data["sys"]["sunset"]).tm_hour}:{str(time.localtime(weather_data["sys"]["sunset"]).tm_min).zfill(2)}. '
-
         return weather_desc
     else:
         return 'W tej chwili pogoda jest niedostępna. '
@@ -121,7 +124,7 @@ def get_raw_daily_forecast():
             if 2 <= dt <= 4 :  # We reached to the end of the day (night actually)
                 break
     else:
-        logging.error(' Weather forecast is not available right now.')
+        logging.error('Currently weather prediction is not available. Internet issue possible.')
 
     return morn, day, eve, night
 

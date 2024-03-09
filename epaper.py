@@ -6,13 +6,13 @@ from waveshare_epd import epd1in54_V2
 
 import weather
 
-#TODO: Why the screen breaks without internet connection?
-
 def get_weather() -> str:
+	print(f'{weather.get_current_weather_full_deccription()}{weather.get_daily_forecast()}')
 	return f'{weather.get_current_weather_full_deccription()}{weather.get_daily_forecast()}'
 
 def run(player) -> None:
 	try:
+		get_weather()
 		epd = epd1in54_V2.EPD()
 		epd.init(0)
 		epd.Clear(0xFF)
@@ -32,10 +32,10 @@ def run(player) -> None:
 
 		while True:
 			draw.rectangle((0, 0, epd.height, epd.width), fill=255)
-			
+
 			# Draw radio station's logo
 			if player.get_curr_station().id != curr_station_id:
-				curr_station_id = player.get_curr_station().id 
+				curr_station_id = player.get_curr_station().id
 				radio_name_pos = 0
 
 			logo = Image.open(f'images/radio_{curr_station_id}.bmp')
@@ -43,19 +43,19 @@ def run(player) -> None:
 			# Write radio station's name
 			if curr_station_id:
 				image.paste(logo, (50, 0))
-	
+
 				draw.text((radio_name_pos, 110), player.get_curr_station().name, font=font, fill=0)
-	
+
 				radio_name_width = font.getsize(player.get_curr_station().name)[0]
-				
+
 				if radio_name_width > 200:
 					radio_name_pos -= 10
 					radio_name_pos_bis = radio_name_pos + radio_name_width + 100
-					
+
 					if radio_name_pos_bis <= 0:
 						radio_name_pos = 0
 						radio_name_pos_bis = 0
-					
+
 					draw.text((radio_name_pos_bis, 110), player.get_curr_station().name, font=font, fill=0)
 			else:
 				image.paste(logo, (25, 0))
@@ -76,7 +76,7 @@ def run(player) -> None:
 			if weather_pos_bis <= 0:
 				weather_pos = 0
 				weather_pos_bis = font_weather.getsize(current_weather)[0]
-			
+
 			# Display iamge
 			epd.displayPart(epd.getbuffer(image))
 			time.sleep(0.9)
