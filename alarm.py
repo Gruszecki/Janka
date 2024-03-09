@@ -86,7 +86,6 @@ class Alarm:
             time.sleep(0.01)
 
     def start(self, player) -> None:
-        voice_assistant.speak(f'Dzień dobry. Jestem Janka.')
         while True:
             today = str(datetime.date.today().weekday() + 1)
             time_now_h = datetime.datetime.now().hour

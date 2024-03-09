@@ -19,3 +19,6 @@ alarm_thread = threading.Thread(target=alarm.start, args=(player,))
 alarm_thread.start()
 
 
+#TODO: Watchdog
+#TODO: WiFi stalker
+#TODO: Camera module

@@ -1,12 +1,8 @@
 import datetime
-import io
 import logging
-import numpy as np
-import os
 import time
 from typing import Union
 
-import easyocr
 import pyttsx3
 import speech_recognition as sr
 
@@ -23,6 +19,8 @@ class VoiceAssistant:
         self.player = player
         self.WAKE = 'janko'
         self.silent_mode = False
+
+        self.speak(f'Dzień dobry. Jestem Janka.')
 
     # Private tools
     def _volume_gradient_asc(self, initial_volume: int = 50, target_volume: int = 100) -> None:

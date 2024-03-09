@@ -34,7 +34,7 @@ def _build_weather_query(mode: str) -> Union[str, None]:
 
     return url
 
-def get_weather_raw_data(mode: str) -> Optional[dict]:
+def _get_weather_raw_data(mode: str) -> Optional[dict]:
     """
     Get weather data from OpenWeatherMap API.
     :param mode: 'current' for current weather or 'forecast' for daily weather
@@ -65,7 +65,7 @@ def get_weather_raw_data(mode: str) -> Optional[dict]:
 
 def get_current_weather_full_deccription() -> str:
     local_time = time.localtime(time.time())
-    weather_data = get_weather_raw_data('current')
+    weather_data = _get_weather_raw_data('current')
 
     if weather_data:
         weather_desc = f'Pogoda dla miejscowości {CITY}. Stan na godzinę {local_time.tm_hour}:{str(local_time.tm_min).zfill(2)}. ' \
@@ -80,7 +80,7 @@ def get_current_weather_full_deccription() -> str:
 
         return weather_desc
     else:
-        return 'W tej chwili pogoda jest niedostępna.'
+        return 'W tej chwili pogoda jest niedostępna. '
 
 def get_raw_daily_forecast():
     morn = None
@@ -88,7 +88,7 @@ def get_raw_daily_forecast():
     eve = None
     night = None
 
-    weather_data = get_weather_raw_data('forecast')
+    weather_data = _get_weather_raw_data('forecast')
 
     if weather_data:
         timeshift = weather_data['city']['timezone']//3600
@@ -141,4 +141,4 @@ def get_daily_forecast():
 
         return full_string
     else:
-        return 'W tej chwili prognoza pogody jest niedostępna.'
+        return 'W tej chwili prognoza pogody jest niedostępna. '

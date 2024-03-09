@@ -6,6 +6,7 @@ from waveshare_epd import epd1in54_V2
 
 import weather
 
+#TODO: Why the screen breaks without internet connection?
 
 def get_weather() -> str:
 	return f'{weather.get_current_weather_full_deccription()}{weather.get_daily_forecast()}'
