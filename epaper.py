@@ -7,12 +7,10 @@ from waveshare_epd import epd1in54_V2
 import weather
 
 def get_weather() -> str:
-	print(f'{weather.get_current_weather_full_deccription()}{weather.get_daily_forecast()}')
 	return f'{weather.get_current_weather_full_deccription()}{weather.get_daily_forecast()}'
 
 def run(player) -> None:
 	try:
-		get_weather()
 		epd = epd1in54_V2.EPD()
 		epd.init(0)
 		epd.Clear(0xFF)

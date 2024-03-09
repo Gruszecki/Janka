@@ -83,7 +83,7 @@ def get_current_weather_full_deccription() -> str:
                        f'Zachód słońca: {time.localtime(weather_data["sys"]["sunset"]).tm_hour}:{str(time.localtime(weather_data["sys"]["sunset"]).tm_min).zfill(2)}. '
         return weather_desc
     else:
-        return 'W tej chwili pogoda jest niedostępna. '
+        return 'W tej chwili odczyt pogody nie jest możliwy. '
 
 def get_raw_daily_forecast():
     morn = None
@@ -123,8 +123,6 @@ def get_raw_daily_forecast():
 
             if 2 <= dt <= 4 :  # We reached to the end of the day (night actually)
                 break
-    else:
-        logging.error('Currently weather prediction is not available. Internet issue possible.')
 
     return morn, day, eve, night
 
@@ -144,4 +142,4 @@ def get_daily_forecast():
 
         return full_string
     else:
-        return 'W tej chwili prognoza pogody jest niedostępna. '
+        return 'Prognoza pogody jest niedostępna. '
