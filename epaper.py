@@ -81,8 +81,3 @@ def run(player) -> None:
 
 	except IOError as e:
 		print(e)
-
-if __name__ == '__main__':
-    run()
-
-

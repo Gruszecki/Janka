@@ -5,6 +5,7 @@ venv/
 
 # App
 secrets.ini
+networks.json
 
 # Local
 *.mp3
