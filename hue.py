@@ -1,6 +1,8 @@
 # This Python file uses the following encoding: utf-8
 import logging
 from configparser import ConfigParser
+
+import phue
 from phue import Bridge
 
 
@@ -10,15 +12,17 @@ def _get_bridge_ip():
     return config['hue']['bridge_ip']
 
 def _connect_with_bridge():
-    b = Bridge(_get_bridge_ip())
-
     try:
+        b = Bridge(_get_bridge_ip())
         b.connect()
+
+        return b.get_light_objects()
+    except phue.PhueRegistrationException as e:
+        logging.error(f'Philips Hue registration failed: {e}')
+        return None
     except Exception as e:
         logging.error(e)
         return None
-
-    return b.get_light_objects()
 
 def _print_available_lights():
     lights = _connect_with_bridge()
@@ -61,3 +65,6 @@ def turn_on_color_loop() -> bool:
         return True
 
     return False
+
+
+_connect_with_bridge()
