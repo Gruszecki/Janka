@@ -29,5 +29,9 @@
     "id": 7,
     "name": "Radio Nowinki",
     "url": "http://nowinki.pk.edu.pl:8000/nowinki"
+  }, {
+    "id": 8,
+    "name": "Radio mantra",
+    "url": "https://whsh4u-panel.com/proxy/gsedemag?mp=/stream"
   }
 ]
