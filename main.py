@@ -2,7 +2,7 @@ import logging
 import threading
 import time
 
-# import epaper
+import epaper
 from alarm import Alarm
 from player import Player
 from voice_assistant import VoiceAssistant
@@ -18,8 +18,8 @@ def start_threads():
     voice_assistant_thread = threading.Thread(target=voice_assistant.listen_all_the_time)
     voice_assistant_thread.start()
 
-    # epaper_thread = threading.Thread(target=epaper.run, args=(player,))
-    # epaper_thread.start()
+    epaper_thread = threading.Thread(target=epaper.run, args=(player,))
+    epaper_thread.start()
     epaper_thread = None
 
     alarm_thread = threading.Thread(target=alarm.start, args=(player,))
@@ -40,10 +40,10 @@ def watchdog():
             voice_assistant_thread = threading.Thread(target=voice_assistant.listen_all_the_time)
             voice_assistant_thread.start()
 
-        # if not epaper_thread.is_alive():
-        #     print("Restarting epaper display thread")
-        #     epaper_thread = threading.Thread(target=epaper.run, args=(player,))
-        #     epaper_thread.start()
+        if not epaper_thread.is_alive():
+            print("Restarting epaper display thread")
+            epaper_thread = threading.Thread(target=epaper.run, args=(player,))
+            epaper_thread.start()
 
         if not alarm_thread.is_alive():
             print("Restarting alarm thread")
