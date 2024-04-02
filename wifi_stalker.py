@@ -35,21 +35,21 @@ class WiFi_Stalker:
             try:
                 result = subprocess.check_output(['sudo', 'iwlist', 'wlan0', 'scan'])
             except subprocess.CalledProcessError as e:
-                logging.error(f'Error during scanning Wi-Fi network: {e}')
+                logging.error(f' WiFi stalker: Error during scanning Wi-Fi network: {e}')
                 return ['']
 
             result = result.decode('utf-8')  # konwersja bajtów na string
             wifi_networks = re.findall(r'ESSID:"([^"]*)"', result)
             return wifi_networks
         else:
-            logging.info('WiFi stalker: unsupported operating system')
+            logging.info(' WiFi stalker: unsupported operating system')
 
         return ssids
 
     def stalk(self) -> str | None:
         for network in networks.get_networks():
             if any(network.name in n.name for n in networks.get_networks()):
-                logging.info(f'Found password for the {network.name} network')
+                logging.info(f' WiFi stalker: Found password for the {network.name} network')
                 return network
             else:
                 return None
@@ -65,7 +65,7 @@ class WiFi_Stalker:
             if not self.is_internet_available():
                 if self.internet_availability:
                     self.internet_availability = False
-                    logging.info('WiFi stalker: Internet connection lost')
+                    logging.info(' WiFi stalker: Internet connection lost')
                     VoiceAssistant.speak('Utraciłam połączenie z internetem. ')
 
                 network = self.stalk()
