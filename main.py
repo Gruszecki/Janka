@@ -20,7 +20,6 @@ def start_threads():
 
     epaper_thread = threading.Thread(target=epaper.run, args=(player,))
     epaper_thread.start()
-    epaper_thread = None
 
     alarm_thread = threading.Thread(target=alarm.start, args=(player,))
     alarm_thread.start()
