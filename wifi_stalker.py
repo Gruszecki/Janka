@@ -1,5 +1,6 @@
 import logging
 import platform
+import re
 import subprocess
 import time
 
@@ -31,12 +32,15 @@ class WiFi_Stalker:
                     ssids.append(ls[x])
                 x += 1
         elif system == "Linux":
-            result = subprocess.check_output(["nmcli", "-t", "dev", "wifi", "list"])
-            result = result.decode("ascii")
-            ls = result.split("\n")
-            for linia in ls:
-                if linia != '':
-                    ssids.append(linia.split(':')[1])
+            try:
+                result = subprocess.check_output(["sudo", "iwlist", "wlan0", "scan"])
+            except subprocess.CalledProcessError as e:
+                logging.error(f'Błąd podczas skanowania sieci Wi-Fi: {e}')
+                return ['']
+
+            result = result.decode("utf-8")  # konwersja bajtów na string
+            wifi_networks = re.findall(r'ESSID:"([^"]*)"', result)
+            return wifi_networks
         else:
             logging.info('WiFi stalker: unsupported operating system')
 
