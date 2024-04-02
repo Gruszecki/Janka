@@ -20,25 +20,25 @@ class WiFi_Stalker:
         ssids = list()
         system = platform.system()
 
-        if system == "Windows":
-            result = subprocess.check_output(["netsh", "wlan", "show", "network"])
-            result = result.decode("ascii")  # konwersja bajtów na string
-            result = result.replace("\r", "")
-            ls = result.split("\n")
+        if system == 'Windows':
+            result = subprocess.check_output(['netsh', 'wlan', 'show', 'network'])
+            result = result.decode('ascii')
+            result = result.replace('\r', '')
+            ls = result.split('\n')
             ls = ls[4:]
             x = 0
             while x < len(ls):
                 if x % 5 == 0:
                     ssids.append(ls[x])
                 x += 1
-        elif system == "Linux":
+        elif system == 'Linux':
             try:
-                result = subprocess.check_output(["sudo", "iwlist", "wlan0", "scan"])
+                result = subprocess.check_output(['sudo', 'iwlist', 'wlan0', 'scan'])
             except subprocess.CalledProcessError as e:
-                logging.error(f'Błąd podczas skanowania sieci Wi-Fi: {e}')
+                logging.error(f'Error during scanning Wi-Fi network: {e}')
                 return ['']
 
-            result = result.decode("utf-8")  # konwersja bajtów na string
+            result = result.decode('utf-8')  # konwersja bajtów na string
             wifi_networks = re.findall(r'ESSID:"([^"]*)"', result)
             return wifi_networks
         else:
@@ -46,29 +46,31 @@ class WiFi_Stalker:
 
         return ssids
 
+    def stalk(self) -> str | None:
+        for network in networks.get_networks():
+            if any(network.name in n.name for n in networks.get_networks()):
+                logging.info(f'Found password for the {network.name} network')
+                return network
+            else:
+                return None
+
     def change_network(self, name: str) -> bool:
         pass
 
-    def stalk(self) -> str:
-        available_networks = self.get_available_networks()
-        print(available_networks)
-
-
-
     def provide_internet(self):
-        '''
+        """
         This method is destined to work in loop as a separate thread
-        '''
+        """
         while True:
             if not self.is_internet_available():
                 if self.internet_availability:
                     self.internet_availability = False
                     logging.info('WiFi stalker: Internet connection lost')
-                    VoiceAssistant.speak('Straciłam połączenie z internetem. ')
+                    VoiceAssistant.speak('Utraciłam połączenie z internetem. ')
 
-                name = self.stalk()
+                network = self.stalk()
 
-                if name:
-                    self.change_network(name)
+                if network:
+                    self.change_network(network)
 
                 time.sleep(1)
