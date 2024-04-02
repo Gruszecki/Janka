@@ -1,6 +1,6 @@
-import platform
-
+import json
 from dataclasses import dataclass
+from settings import NETWORKS_PATH
 
 @dataclass
 class NetworkInfo:
@@ -8,17 +8,12 @@ class NetworkInfo:
     password: str
 
 
-def _get_os() -> str:
-    return platform.system()
-
-def _json_to_dict() -> None:
-    pass
-
-def _dump_networks() -> None:
-    pass
-
 def get_networks() -> list:
-    pass
+    with open(NETWORKS_PATH, 'r') as f:
+        jdata = json.load(f)
+
+    return [NetworkInfo(name=d['name'], password=d['password']) for d in jdata]
+
 
 def save_new_network() -> None:
     pass
