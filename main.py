@@ -6,12 +6,13 @@ import epaper
 from alarm import Alarm
 from player import Player
 from voice_assistant import VoiceAssistant
-from wifi_stalker import WiFi_Stalker
+from wifi_stalker import WiFiStalker
+
 
 player = Player()
 alarm = Alarm()
 voice_assistant = VoiceAssistant(player)
-wifi_stalker = WiFi_Stalker()
+wifi_stalker = WiFiStalker()
 
 
 def start_threads():
@@ -20,6 +21,7 @@ def start_threads():
 
     epaper_thread = threading.Thread(target=epaper.run, args=(player,))
     epaper_thread.start()
+    # epaper_thread = None
 
     alarm_thread = threading.Thread(target=alarm.start, args=(player,))
     alarm_thread.start()
@@ -63,7 +65,7 @@ watchdog_thread = threading.Thread(target=watchdog())
 watchdog_thread.start()
 
 
-# TODO: WiFi stalker
-# TODO: Camera module
+# TODO: WiFi stalker for Linux
+# TODO: Camera module partially depends on WiFi Stalker
 # TODO: AI powered voice
 # TODO: Real time voice scrapping
