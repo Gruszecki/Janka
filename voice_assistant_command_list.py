@@ -27,10 +27,10 @@ commands_list = [
     ),
     Command(
         func='self._turn_on_lights()',
-        commands=['włącz światło',
-                  'włącz światła',
-                  'zapal światło',
-                  'zaświeć światło']
+        commands=['włącz mocne światło',
+                  'włącz mocne światła',
+                  'zapal mocne światło',
+                  'zaświeć mocne światło']
     ),
     Command(
         func='self._turn_on_soft_lights()',
@@ -44,10 +44,10 @@ commands_list = [
     ),
     Command(
         func='self._turn_on_mid_lights()',
-        commands=['włącz średnie światło',
-                  'włącz średnie światła',
-                  'zapal średnie światło',
-                  'zaświeć średnie światło']
+        commands=['włącz światło',
+                  'włącz światła',
+                  'zapal światło',
+                  'zaświeć światło']
     ),
     Command(
         func='self._turn_off_lights()',
