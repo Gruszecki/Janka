@@ -12,7 +12,7 @@ from wifi_stalker import WiFiStalker
 player = Player()
 alarm = Alarm()
 voice_assistant = VoiceAssistant(player)
-wifi_stalker = WiFiStalker()
+wifi_stalker = WiFiStalker(voice_assistant)
 
 
 def start_threads():

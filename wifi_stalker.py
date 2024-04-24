@@ -6,13 +6,12 @@ import subprocess
 import time
 
 import networks
-from voice_assistant import VoiceAssistant
-
 
 
 class WiFiStalker:
-    def __init__(self):
+    def __init__(self, voice_assistant):
         self.internet_availability = self.is_internet_available()
+        self.voice_assistant = voice_assistant
 
     def is_internet_available(self) -> bool:
         try:
@@ -125,7 +124,6 @@ class WiFiStalker:
         result = self.is_internet_available()
         return result
 
-
     def provide_internet(self) -> None:
         """
         This method is destined to work in loop as a separate thread
@@ -135,7 +133,8 @@ class WiFiStalker:
                 if self.internet_availability:
                     self.internet_availability = False
                     logging.info(' WiFi stalker: Internet connection lost')
-                    VoiceAssistant.speak('Utraciłam połączenie z internetem. ')
+                    if not self.voice_assistant.silent_mode:
+                        self.voice_assistant.speak('Utraciłam połączenie z internetem. ')
 
                 for network in self.stalk():
                     if self.connect_and_check_internet(network):
@@ -147,4 +146,5 @@ class WiFiStalker:
                 if not self.internet_availability:
                     self.internet_availability = True
                     logging.info(' WiFi stalker: Internet access present')
-                    VoiceAssistant.speak('Nawiązałam połączenie z internetem. ')
+                    if not self.voice_assistant.silent_mode:
+                        self.voice_assistant.speak('Nawiązałam połączenie z internetem. ')
