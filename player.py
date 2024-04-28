@@ -8,7 +8,7 @@ from typing import Union, Optional
 from voice_assistant import VoiceAssistant as voice_assistant
 from settings import URLS_PATH
 
-logging.basicConfig(level = logging.CRITICAL)
+logging.basicConfig(level=logging.CRITICAL)
 
 
 @dataclass

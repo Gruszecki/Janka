@@ -2,6 +2,9 @@ import json
 from dataclasses import dataclass
 from settings import NETWORKS_PATH
 
+import camera_operator
+
+
 @dataclass
 class NetworkInfo:
     name: str
@@ -16,4 +19,8 @@ def get_networks() -> list:
 
 
 def save_new_network() -> None:
-    pass
+    # TODO: save_new_network
+    wifi_name, password = camera_operator.get_creds_from_live_image()
+
+
+save_new_network()
