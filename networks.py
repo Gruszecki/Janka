@@ -26,12 +26,7 @@ def _dump_networks(networks) -> None:
         f.write(data_to_dump)
 
 
-def save_new_network() -> bool:
-    wifi_name, password = camera_operator.get_creds_from_live_image()
-
-    if not (wifi_name and password):
-        return False
-
+def save_new_network(wifi_name, password) -> bool:
     networks = get_networks()
 
     for network in networks:
