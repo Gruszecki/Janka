@@ -2,6 +2,8 @@ import cv2
 import logging
 from pyzbar.pyzbar import decode
 
+from voice_assistant import VoiceAssistant
+
 logging.basicConfig(level=logging.INFO)
 
 
@@ -13,9 +15,17 @@ class CameraOperator:
         self.cap.release()
 
     def _read_network_credentials_from_qr(self, frame) -> tuple[str, str] | tuple[None, None]:
-        data = decode(frame)
-        creds = data[0].data.decode('utf-8') if data else None
-        wifi_name, password = creds.split('\n') if creds else [None, None]
+        wifi_name, password = None, None
+
+        decoded_data = decode(frame)
+        creds = decoded_data[0].data.decode('utf-8') if decoded_data else None
+
+        if creds:
+            try:
+                wifi_name, password = creds.split('\n')
+            except:
+                logging.info(f' Camera operator: wrong QR code. Got data: {creds}')
+                VoiceAssistant.speak('Niepoprawny kod QR')
 
         return wifi_name, password
 
