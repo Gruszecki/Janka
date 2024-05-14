@@ -41,8 +41,17 @@ class CameraOperator:
         time.sleep(1)
         VoiceAssistant.speak('Dwa')
         time.sleep(1)
+
+        _, frame = self.cap.read()
+        cv2.imwrite(f'photos/img_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.jpg', frame)
+
         VoiceAssistant.speak('Jeden')
         time.sleep(1)
+
+        _, frame = self.cap.read()
+        cv2.imwrite(f'photos/img_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.jpg', frame)
+
+        VoiceAssistant.speak('Uwaga. Robię zdjęcie. Uśmiech.')
 
         _, frame = self.cap.read()
         cv2.imwrite(f'photos/img_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.jpg', frame)
