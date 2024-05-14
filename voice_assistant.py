@@ -224,3 +224,5 @@ class VoiceAssistant:
         '''
         while True:
             self._listen()
+
+    # TODO: add take picture command

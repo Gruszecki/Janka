@@ -56,6 +56,8 @@ class CameraOperator:
         _, frame = self.cap.read()
         cv2.imwrite(f'photos/img_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.jpg', frame)
 
+        # TODO: play camera sound
+
 
     def get_creds_from_image(self) -> tuple[str, str] | tuple[None, None]:
         _, frame = self.cap.read()
