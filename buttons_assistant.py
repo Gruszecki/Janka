@@ -13,7 +13,6 @@ Obsluga kamery, czytania passów do wifi leży po stronie camera operatora.
 
 class ButtonsAssistant:
     def __init__(self):
-        self.camera_operator = None
         self.camera_active = False
 
     def _switch_leds(self) -> None:
@@ -26,15 +25,15 @@ class ButtonsAssistant:
 
     def _save_credentials(self):
         wifi_name, password = None, None
-        self.camera_operator = CameraOperator()
+        camera_operator = CameraOperator()
 
         while self.camera_active:
-            wifi_name, password = self.camera_operator.get_creds_from_image()
+            wifi_name, password = camera_operator.get_creds_from_image()
 
             if wifi_name and password:
                 break
 
-        self.camera_operator.close_stream()
+        camera_operator.close_stream()
         self.camera_active = False
 
         if wifi_name and password:
