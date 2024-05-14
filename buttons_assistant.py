@@ -21,8 +21,8 @@ class ButtonsAssistant:
         pass
 
     def _make_picture(self):
-        # TODO
-        pass
+        camera_operator = CameraOperator()
+        camera_operator.take_photo()
 
     def _save_credentials(self):
         wifi_name, password = None, None
@@ -47,6 +47,8 @@ class ButtonsAssistant:
                 if self.camera_active:
                     get_wifi_creds_thread = threading.Thread(target=self._save_credentials)
                     get_wifi_creds_thread.start()
+            case 'p':
+                self._make_picture()
 
     def listen(self, player) -> None:
         '''

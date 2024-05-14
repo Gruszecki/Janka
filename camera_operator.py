@@ -1,3 +1,7 @@
+import datetime
+import os.path
+import time
+
 import cv2
 import logging
 from pyzbar.pyzbar import decode
@@ -29,9 +33,20 @@ class CameraOperator:
 
         return wifi_name, password
 
-    def save_picture(self):
-        # TODO: save_picture
-        pass
+    def take_photo(self):
+        if not os.path.exists('photos'):
+            os.mkdir('photos')
+
+        VoiceAssistant.speak('Trzy')
+        time.sleep(1)
+        VoiceAssistant.speak('Dwa')
+        time.sleep(1)
+        VoiceAssistant.speak('Jeden')
+        time.sleep(1)
+
+        _, frame = self.cap.read()
+        cv2.imwrite(f'photos/img_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.jpg', frame)
+
 
     def get_creds_from_image(self) -> tuple[str, str] | tuple[None, None]:
         _, frame = self.cap.read()
