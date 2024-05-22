@@ -1,6 +1,7 @@
 import threading
 import time
 
+from playsound import playsound
 from pynput import keyboard
 
 import networks
@@ -40,7 +41,7 @@ class ButtonsAssistant:
 
         co.take_photo()
 
-        # TODO: play camera sound
+        playsound(r'sounds/shutter.mp3')
 
     def _save_credentials(self):
         wifi_name, password = None, None

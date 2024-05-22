@@ -5,6 +5,7 @@ from typing import Union
 
 import pyttsx3
 import speech_recognition as sr
+from playsound import playsound
 
 import hue
 import weather
@@ -200,7 +201,7 @@ class VoiceAssistant:
 
         co.take_photo()
 
-        # TODO: play camera sound
+        playsound(r'sounds/shutter.mp3')
 
 
     @staticmethod
@@ -247,5 +248,3 @@ class VoiceAssistant:
         '''
         while True:
             self._listen()
-
-    # TODO: add take picture command
