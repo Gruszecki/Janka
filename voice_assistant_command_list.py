@@ -82,5 +82,9 @@ commands_list = [
         commands=['jaka będzie pogoda',
                   'prognoza pogody',
                   'podaj prognozę pogody']
+    ),
+    Command(
+        func='self._take_picture()',
+        commands=['zrób zdjęcie']
     )
 ]

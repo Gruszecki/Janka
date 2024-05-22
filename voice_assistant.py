@@ -8,6 +8,7 @@ import speech_recognition as sr
 
 import hue
 import weather
+from camera_operator import CameraOperator
 from voice_assistant_command_list import commands_list
 
 
@@ -179,6 +180,28 @@ class VoiceAssistant:
 
     def _prev_station(self):
         self.player.set_prev_station()
+
+    def _take_picture(self):
+        co = CameraOperator()
+
+        VoiceAssistant.speak('Trzy')
+        time.sleep(1)
+        VoiceAssistant.speak('Dwa')
+        time.sleep(1)
+
+        co.take_photo()
+
+        VoiceAssistant.speak('Jeden')
+        time.sleep(1)
+
+        co.take_photo()
+
+        VoiceAssistant.speak('Uwaga. Robię zdjęcie. Uśmiech.')
+
+        co.take_photo()
+
+        # TODO: play camera sound
+
 
     @staticmethod
     def _check_lights_connection(func):

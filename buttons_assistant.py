@@ -1,9 +1,11 @@
 import threading
+import time
 
 from pynput import keyboard
 
 import networks
 from camera_operator import CameraOperator
+from voice_assistant import VoiceAssistant
 
 
 """
@@ -20,8 +22,25 @@ class ButtonsAssistant:
         pass
 
     def _make_picture(self):
-        camera_operator = CameraOperator()
-        camera_operator.take_photo()
+        co = CameraOperator()
+
+        VoiceAssistant.speak('Trzy')
+        time.sleep(1)
+        VoiceAssistant.speak('Dwa')
+        time.sleep(1)
+
+        co.take_photo()
+
+        VoiceAssistant.speak('Jeden')
+        time.sleep(1)
+
+        co.take_photo()
+
+        VoiceAssistant.speak('Uwaga. Robię zdjęcie. Uśmiech.')
+
+        co.take_photo()
+
+        # TODO: play camera sound
 
     def _save_credentials(self):
         wifi_name, password = None, None
@@ -29,6 +48,9 @@ class ButtonsAssistant:
 
         while self.camera_active:
             wifi_name, password = camera_operator.get_creds_from_image()
+
+            if wifi_name == -1:
+                VoiceAssistant.speak('Niepoprawny kod QR')
 
             if wifi_name and password:
                 break
