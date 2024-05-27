@@ -17,7 +17,7 @@
         "stop_h": 7,
         "stop_m": 30,
         "days": "5",
-        "station_id": 5,
+        "station_id": 2,
         "msg": null,
         "wake_up": true
     },
