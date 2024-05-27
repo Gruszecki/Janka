@@ -36,6 +36,7 @@ python-vlc==3.0.18122
 pyttsx3==2.90
 PyWavelets==1.4.1
 PyYAML==6.0
+zbar
 pyzbar==0.1.9
 requests==2.30.0
 scikit-image==0.20.0
