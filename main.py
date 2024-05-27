@@ -67,3 +67,4 @@ watchdog_thread.start()
 
 # TODO: AI powered voice
 # TODO: Real time voice scrapping
+# TODO: Set timer
