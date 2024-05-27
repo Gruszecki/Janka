@@ -40,7 +40,7 @@ class VoiceAssistant:
 
     def _get_audio(self) -> str:
         recognizer = sr.Recognizer()
-        recognizer.energy_threshold = 150
+        recognizer.energy_threshold = 100
 
         with sr.Microphone() as source:
             logging.info(' Voice assistant: listening...')
@@ -81,17 +81,21 @@ class VoiceAssistant:
             time.sleep(5)
 
         if text.count(self.WAKE) > 0:
-            self._volume_gradient_desc()
-            VoiceAssistant.speak('Tak?')
+            potential_command = text.split(self.WAKE)[-1].strip()
+            potential_command_result = self._execute_command(potential_command)
 
-            text = self._validate_text(self._get_audio())
-            logging.info(f' Voice assistant: got command: {text}')
-            result = self._execute_command(text) if text else None
+            if not potential_command_result:
+                self._volume_gradient_desc()
+                VoiceAssistant.speak('Tak?')
 
-            if text and not result:
-                VoiceAssistant.speak(f'Nie znalazłam akcji dla: {text}')
+                text = self._validate_text(self._get_audio())
+                logging.info(f' Voice assistant: got command: {text}')
+                result = self._execute_command(text) if text else None
 
-            self._volume_gradient_asc()
+                if text and not result:
+                    VoiceAssistant.speak(f'Nie znalazłam akcji dla: {text}')
+
+                self._volume_gradient_asc()
 
         return 1
 

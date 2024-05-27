@@ -65,7 +65,5 @@ watchdog_thread = threading.Thread(target=watchdog())
 watchdog_thread.start()
 
 
-# TODO: WiFi stalker for Linux
-# TODO: Camera module partially depends on WiFi Stalker
 # TODO: AI powered voice
 # TODO: Real time voice scrapping
