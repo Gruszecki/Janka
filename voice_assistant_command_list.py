@@ -10,7 +10,7 @@ class Command:
 
 commands_list = [
     Command(
-        func='self._radio_on_specific_station(text)',
+        func='self._radio_on_specific_station(arg)',
         commands=['włącz radio']
     ),
     Command(

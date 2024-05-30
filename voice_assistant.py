@@ -82,31 +82,45 @@ class VoiceAssistant:
 
         if text.count(self.WAKE) > 0:
             potential_command = text.split(self.WAKE)[-1].strip()
-            potential_command_result = self._execute_command(potential_command)
+            validated_command = self._validate_command(potential_command)
 
-            if not potential_command_result:
+            if validated_command:
+                self._volume_gradient_desc()
+                self._execute_command(validated_command, potential_command)
+                self._volume_gradient_asc()
+            else:
                 self._volume_gradient_desc()
                 VoiceAssistant.speak('Tak?')
 
                 text = self._validate_text(self._get_audio())
                 logging.info(f' Voice assistant: got command: {text}')
-                result = self._execute_command(text) if text else None
 
-                if text and not result:
+                validated_command = self._validate_command(text) if text else None
+                self._execute_command(validated_command, text) if validated_command else None
+
+                if text and not validated_command:
                     VoiceAssistant.speak(f'Nie znalazłam akcji dla: {text}')
 
                 self._volume_gradient_asc()
 
         return 1
 
-    def _execute_command(self, text: str) -> int:
+    def _validate_command(self, text: str) -> str | bool:
         for command_instance in commands_list:
             for command in command_instance.commands:
                 if command in text:
-                    exec(f'{command_instance.func}')
-                    return 1
+                    return command_instance.func
 
-        return 0
+        return False
+
+    def _execute_command(self, func: str, arg: str) -> None:
+        '''
+        Function that executes command from voice_assistant_command_list.py
+        :param func: Function to execute
+        :param arg: Spoken text (command + args, e.g. włącz radio nowy świat). It must be named arg because of definition in voice_assistant_command_list.py
+        :return: None
+        '''
+        exec(func)
 
     # Statics
     @staticmethod
