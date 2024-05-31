@@ -42,5 +42,38 @@
         "station_id": null,
         "msg": "Nowy odcinek LS-a",
         "wake_up": false
+    },
+    {
+        "name": "Lista przebojów w Trójce",
+        "start_h": 19,
+        "start_m": 0,
+        "stop_h": null,
+        "stop_m": null,
+        "days": "5",
+        "station_id": null,
+        "msg": "Lista przebojów Trójki",
+        "wake_up": false
+    },
+    {
+        "name": "Lista przebojów w Radiu Nowy Świat",
+        "start_h": 20,
+        "start_m": 0,
+        "stop_h": null,
+        "stop_m": null,
+        "days": "6",
+        "station_id": null,
+        "msg": "Lista przebojów radia Nowy Świat",
+        "wake_up": false
+    },
+    {
+        "name": "Turbo Top",
+        "start_h": 20,
+        "start_m": 0,
+        "stop_h": null,
+        "stop_m": null,
+        "days": "5",
+        "station_id": null,
+        "msg": "Turbo Top w Antyradiu",
+        "wake_up": false
     }
 ]
