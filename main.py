@@ -21,7 +21,6 @@ def start_threads():
 
     epaper_thread = threading.Thread(target=epaper.run, args=(player,))
     epaper_thread.start()
-    # epaper_thread = None
 
     alarm_thread = threading.Thread(target=alarm.start, args=(player,))
     alarm_thread.start()
@@ -42,17 +41,17 @@ def watchdog():
             voice_assistant_thread.start()
 
         if not epaper_thread.is_alive():
-            print("Restarting epaper display thread")
+            logging.info("Restarting epaper display thread")
             epaper_thread = threading.Thread(target=epaper.run, args=(player,))
             epaper_thread.start()
 
         if not alarm_thread.is_alive():
-            print("Restarting alarm thread")
+            logging.info("Restarting alarm thread")
             alarm_thread = threading.Thread(target=alarm.start, args=(player,))
             alarm_thread.start()
 
         if not wifi_stalker_thread.is_alive():
-            print("Restarting WiFi stalker thread")
+            logging.info("Restarting WiFi stalker thread")
             wifi_stalker_thread = threading.Thread(target=wifi_stalker.provide_internet)
             wifi_stalker_thread.start()
 
@@ -66,5 +65,4 @@ watchdog_thread.start()
 
 
 # TODO: AI powered voice
-# TODO: Real time voice scrapping
 # TODO: Set timer
