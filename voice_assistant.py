@@ -87,6 +87,7 @@ class VoiceAssistant:
             if validated_command:
                 self._volume_gradient_desc()
                 self._execute_command(validated_command, potential_command)
+                time.sleep(1)
                 self._volume_gradient_asc()
             else:
                 self._volume_gradient_desc()
@@ -96,6 +97,7 @@ class VoiceAssistant:
                 logging.info(f' Voice assistant: got command: {text}')
 
                 validated_command = self._validate_command(text) if text else None
+                time.sleep(1)
                 self._execute_command(validated_command, text) if validated_command else None
 
                 if text and not validated_command:
