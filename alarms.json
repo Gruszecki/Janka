@@ -51,7 +51,7 @@
         "stop_m": null,
         "days": "5",
         "station_id": null,
-        "msg": "Lista przebojów Trójki",
+        "msg": "Lista przebojow Trojki",
         "wake_up": false
     },
     {
@@ -62,7 +62,7 @@
         "stop_m": null,
         "days": "6",
         "station_id": null,
-        "msg": "Lista przebojów radia Nowy Świat",
+        "msg": "Lista przebojów radia Nowy Swiat",
         "wake_up": false
     },
     {
